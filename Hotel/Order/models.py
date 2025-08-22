@@ -11,14 +11,15 @@ class Categories(models.Model):
 
 class Dishes(models.Model):
     ch = [("SG", "Signature"), ("SP", "Spicy"), ("SP", "Special")]
+    
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     dish_name = models.CharField(max_length=150)
     receipe = models.TextField(blank=True, null=True)
     price = models.IntegerField()
     optional = models.CharField(choices=ch, null=True, blank=True, max_length=100)
-
+    is_available = models.BooleanField(default=True)
     def __str__(self):
-        return f"{self.dish_name} - {self.category}"
+        return f"{self.dish_name} - {self.category},  Available:   {self.is_available}"
 
 
 

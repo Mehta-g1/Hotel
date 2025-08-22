@@ -21,7 +21,7 @@ from Act import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('order/',include("Order.urls")),
-    # path("billing/",include("Billing.urls")),
+    path("billing/",include("Billing.urls")),
     path("contact/",views.Contact, name = "Contact"),
     path("about/",views.About, name = "About"),
 ]
