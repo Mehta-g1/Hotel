@@ -1,6 +1,6 @@
 from django.db import models
 
-
+#  ravishhvbb,nbb
 class Categories(models.Model):
     category_name = models.CharField(max_length=100)
     added_date = models.TimeField(auto_now_add=True)
