@@ -1,0 +1,295 @@
+
+    const dishes = [
+      { id: 1, name: "Paneer Butter Masala", description: "Creamy paneer curry", price: 250, category: "Main Course" },
+      { id: 2, name: "Veg Biryani", description: "Fragrant rice with veggies", price: 180, category: "Rice" },
+      { id: 3, name: "Chicken Biryani", description: "Hyderabadi style chicken rice", price: 220, category: "Rice" },
+      { id: 4, name: "Dal Tadka", description: "Yellow dal with tadka", price: 150, category: "Main Course" },
+      { id: 5, name: "Chole Bhature", description: "Spicy chana with bhature", price: 120, category: "Snacks" },
+      { id: 6, name: "Aloo Paratha", description: "Stuffed paratha with butter", price: 90, category: "Breakfast" },
+      { id: 7, name: "Masala Dosa", description: "Crispy dosa with masala", price: 110, category: "South Indian" },
+      { id: 8, name: "Idli Sambhar", description: "Soft idli with sambhar", price: 80, category: "South Indian" },
+      { id: 9, name: "Pav Bhaji", description: "Mumbai style bhaji with pav", price: 100, category: "Snacks" },
+      { id: 10, name: "Rajma Chawal", description: "Punjabi rajma with rice", price: 140, category: "Main Course" },
+      { id: 11, name: "Mutton Curry", description: "Spicy mutton curry", price: 300, category: "Main Course" },
+      { id: 12, name: "Butter Naan", description: "Soft naan with butter", price: 50, category: "Bread" },
+      { id: 13, name: "Garlic Naan", description: "Garlic flavored naan", price: 60, category: "Bread" },
+      { id: 14, name: "Tandoori Roti", description: "Clay oven roti", price: 20, category: "Bread" },
+      { id: 15, name: "Mix Veg Curry", description: "Seasonal veg curry", price: 180, category: "Main Course" },
+      { id: 16, name: "Palak Paneer", description: "Spinach with paneer", price: 210, category: "Main Course" },
+      { id: 17, name: "Kadhai Paneer", description: "Paneer with capsicum", price: 220, category: "Main Course" },
+      { id: 18, name: "Shahi Paneer", description: "Rich creamy paneer curry", price: 230, category: "Main Course" },
+      { id: 19, name: "Veg Momos", description: "Steamed dumplings", price: 90, category: "Snacks" },
+      { id: 20, name: "Chicken Momos", description: "Steamed chicken dumplings", price: 120, category: "Snacks" },
+      { id: 21, name: "Spring Roll", description: "Crispy veg roll", price: 100, category: "Snacks" },
+      { id: 22, name: "Fried Rice", description: "Chinese style rice", price: 130, category: "Chinese" },
+      { id: 23, name: "Veg Manchurian", description: "Gravy manchurian", price: 150, category: "Chinese" },
+      { id: 24, name: "Chilli Paneer", description: "Spicy paneer cubes", price: 170, category: "Chinese" },
+      { id: 25, name: "Hakka Noodles", description: "Stir fried noodles", price: 140, category: "Chinese" },
+      { id: 26, name: "Paneer Tikka", description: "Grilled paneer", price: 200, category: "Starter" },
+      { id: 27, name: "Chicken Tikka", description: "Grilled chicken", price: 250, category: "Starter" },
+      { id: 28, name: "Fish Fry", description: "Crispy fried fish", price: 280, category: "Starter" },
+      { id: 29, name: "Veg Sandwich", description: "Grilled veg sandwich", price: 80, category: "Snacks" },
+      { id: 30, name: "Cheese Burger", description: "Cheese loaded burger", price: 150, category: "Snacks" },
+      { id: 31, name: "French Fries", description: "Crispy potato fries", price: 90, category: "Snacks" },
+      { id: 32, name: "Cold Coffee", description: "Icy coffee drink", price: 100, category: "Beverage" },
+      { id: 33, name: "Masala Chai", description: "Spiced Indian tea", price: 30, category: "Beverage" },
+      { id: 34, name: "Fresh Lime Soda", description: "Refreshing soda", price: 50, category: "Beverage" },
+      { id: 35, name: "Lassi", description: "Sweet Punjabi lassi", price: 70, category: "Beverage" },
+      { id: 36, name: "Gulab Jamun", description: "Sweet dessert", price: 60, category: "Dessert" },
+      { id: 37, name: "Rasgulla", description: "Bengali sweet", price: 50, category: "Dessert" },
+      { id: 38, name: "Kheer", description: "Rice pudding", price: 80, category: "Dessert" },
+      { id: 39, name: "Jalebi", description: "Crispy jalebi", price: 70, category: "Dessert" },
+      { id: 40, name: "Ice Cream", description: "Vanilla scoop", price: 100, category: "Dessert" },
+      { id: 41, name: "Paneer Pakora", description: "Crispy fried paneer", price: 120, category: "Snacks" },
+      { id: 42, name: "Samosa", description: "Stuffed samosa", price: 20, category: "Snacks" },
+      { id: 43, name: "Kachori", description: "Spicy kachori", price: 30, category: "Snacks" },
+      { id: 44, name: "Veg Pizza", description: "Cheesy veg pizza", price: 200, category: "Italian" },
+      { id: 45, name: "Margherita Pizza", description: "Classic pizza", price: 180, category: "Italian" },
+      { id: 46, name: "Chicken Pizza", description: "Loaded chicken pizza", price: 250, category: "Italian" },
+      { id: 47, name: "Pasta Alfredo", description: "Creamy pasta", price: 220, category: "Italian" },
+      { id: 48, name: "Pasta Arrabbiata", description: "Spicy pasta", price: 210, category: "Italian" },
+      { id: 49, name: "Club Sandwich", description: "Triple layer sandwich", price: 140, category: "Snacks" },
+      { id: 50, name: "Veg Soup", description: "Healthy veg soup", price: 100, category: "Starter" },
+    ];
+
+    let cart = {};
+
+    // Render Dishes
+    function renderDishes(filter = "") {
+      const container = document.getElementById("dishContainer");
+      container.innerHTML = "";
+
+      const filtered = dishes.filter(d =>
+        d.name.toLowerCase().includes(filter.toLowerCase()) ||
+        d.id.toString().includes(filter)
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = <p class="text-danger">❌ No dishes found</p>;
+        return;
+      }
+
+      filtered.forEach(dish => {
+        container.innerHTML += `
+          <div class="col-md-6">
+            <div class="card menu-card shadow-sm p-2">
+              <div class="card-body">
+                <h5>${dish.id}. ${dish.name}</h5>
+                <p>${dish.description}</p>
+                <h6>₹${dish.price}</h6>
+                <button class="btn btn-primary btn-sm" onclick="addToCart(${dish.id})">Add to Cart</button>
+                
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // Add to Cart
+    function addToCart(id) {
+      const dish = dishes.find(d => d.id === id);
+      if (!cart[id]) {
+        cart[id] = { ...dish, qty: 1 };
+      } else {
+        cart[id].qty++;
+      }
+      renderCart();
+    }
+
+    // Remove from Cart
+// function removeFromCart(id) {
+//       if (cart[id]) {
+//         cart[id].qty--;
+//         if (cart[id].qty <= 0) {
+// +          delete cart[id];
+// +        }
+//       }
+//       renderCart();
+//     }
+
+    // ✅ Render Cart into Table
+    function renderCart() {
+      const cartTable = document.getElementById("cartTable");
+      cartTable.innerHTML = "";
+      let total = 0;
+
+      for (let key in cart) {
+        const item = cart[key];
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+
+        cartTable.innerHTML += `
+          <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td>
+              ${item.qty}
+              <button class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
+            </td>
+            <td>₹${itemTotal}</td>
+          </tr>
+        `;
+      }
+
+      if (Object.keys(cart).length === 0) {
+        cartTable.innerHTML = <tr><td colspan="4">No items added yet.</td></tr>;
+      }
+
+      const tax = total * 0.05;
+      const payable = total + tax;
+
+      document.getElementById("totalAmount").innerText = total.toFixed(2);
+      document.getElementById("taxAmount").innerText = tax.toFixed(2);
+      document.getElementById("payableAmount").innerText = payable.toFixed(2);
+    }
+
+    // Search
+    document.getElementById("searchBox").addEventListener("input", e => {
+      renderDishes(e.target.value);
+    });
+
+    document.getElementById("searchBox").addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        const filter = e.target.value;
+        const filtered = dishes.filter(d =>
+          d.name.toLowerCase().includes(filter.toLowerCase()) ||
+          d.id.toString().includes(filter)
+        );
+
+        if (filtered.length === 1) {
+          addToCart(filtered[0].id);
+          e.target.value = "";
+          renderDishes();
+        }
+      }
+    });
+
+    // Bill Date
+    document.getElementById("billDate").innerText = "Date: " + new Date().toLocaleString();
+
+    // Init
+    renderDishes();
+
+    function populateSearchSuggestions() {
+      const datalist = document.getElementById("search-suggestions");
+      dishes.forEach(dish => {
+        const option = document.createElement('option');
+        option.value = dish.name;
+        datalist.appendChild(option);
+      });
+    }
+    populateSearchSuggestions();
+
+    document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("searchBox").focus(); 
+    });
+      const searchBox = document.getElementById("searchBox");
+  const suggestionsBox = document.getElementById("suggestions");
+
+  // Example dishes array (tumhare dishes wale array ka use karo)
+  const dishNames = dishes.map(d => d.name); 
+
+  searchBox.addEventListener("input", function () {
+    const query = this.value.toLowerCase();
+    suggestionsBox.innerHTML = "";
+
+    if (query.length === 0) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    const filtered = dishNames.filter(name => name.toLowerCase().includes(query));
+
+    if (filtered.length === 0) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    filtered.forEach(name => {
+      const option = document.createElement("a");
+      option.classList.add("list-group-item", "list-group-item-action");
+      option.textContent = name;
+
+      option.onclick = () => {
+        searchBox.value = name;
+        suggestionsBox.style.display = "none";
+        renderDishes(name); // 👈 tumhare render function ko call karega
+      };
+
+      suggestionsBox.appendChild(option);
+    });
+
+    // Search box ke equal width rakho
+    suggestionsBox.style.display = "block";
+    suggestionsBox.style.width = searchBox.offsetWidth + "px";
+    let selectedIndex = -1; // track highlighted option
+
+searchBox.addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  suggestionsBox.innerHTML = "";
+  selectedIndex = -1; // reset on new search
+
+  if (query.length === 0) {
+    suggestionsBox.style.display = "none";
+    return;
+  }
+
+  const filtered = dishNames.filter(name => name.toLowerCase().includes(query));
+
+  if (filtered.length === 0) {
+    suggestionsBox.style.display = "none";
+    return;
+  }
+
+  filtered.forEach((name, index) => {
+    const option = document.createElement("a");
+    option.classList.add("list-group-item", "list-group-item-action");
+    option.textContent = name;
+
+    option.onclick = () => {
+      searchBox.value = name;
+      suggestionsBox.style.display = "none";
+      renderDishes(name);
+    };
+
+    suggestionsBox.appendChild(option);
+  });
+
+  suggestionsBox.style.display = "block";
+  suggestionsBox.style.width = searchBox.offsetWidth + "px";
+});
+
+// ✅ Keyboard navigation (Arrow + Enter)
+searchBox.addEventListener("keydown", function (e) {
+  const items = suggestionsBox.querySelectorAll("a");
+
+  if (suggestionsBox.style.display === "none" || items.length === 0) return;
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    selectedIndex = (selectedIndex + 1) % items.length;
+    updateActive(items);
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+    updateActive(items);
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (selectedIndex >= 0 && selectedIndex < items.length) {
+      items[selectedIndex].click(); // trigger selection
+    }
+  }
+});
+
+function updateActive(items) {
+  items.forEach((item, idx) => {
+    item.classList.toggle("active", idx === selectedIndex);
+  });
+  // Auto scroll to keep active in view
+  if (items[selectedIndex]) {
+    items[selectedIndex].scrollIntoView({ block: "nearest" });
+  }
+}
+
+  });

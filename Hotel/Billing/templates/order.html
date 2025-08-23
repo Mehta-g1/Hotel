@@ -1,17 +1,95 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
-<div class="m-5 bg-success text-light p-3 rounded-4 shadow-lg col-5 mx-auto">
-    <h2>Its Billing Page by {{cashier}}</h2>
 
-    <p id="p">{{dishes}}</p>
+  <div class="sidebar" id="sidebar">
+    <h4 class="text-center mb-4">🍽 Hotel Admin</h4>
+    <a href="#">🏠 Dashboard</a>
+    <a href="#">📋 Orders</a>
+    <a href="#">🍕 Dishes</a>
+    <a href="#">👥 Customers</a>
+    <a href="#">💳 Billing</a>
+    <a href="#">📦 Inventory</a>
+    <a href="#">📊 Reports</a>
+    <a href="#">⚙ Settings</a>
+    <a href="#">❓ Help</a>
+    <a href="#">🚪 Logout</a>
+  </div>
 
+  <!-- Content -->
+  <div class="content" id="content">
+    <!-- Menu Button -->
+    <span class="menu-btn" id="menu-btn">☰</span>
+    <h2>Welcome to Hotel Management Dashboard</h2>
+    <p>Yaha tum apne options ka content show kar sakte ho.</p>
+  </div>
 
-    
-
-</div>
-<div class="dishes">
-        
+<body>
+  <div class="container-fluid mt-3">
+    <!-- Search Bar -->
+    <div class="row mb-3 mt-5">
+      <div class="col-md-8" style="position: relative;">
+        <input type="text" id="searchBox" class="form-control" placeholder="🔍 Search dishes...">
+        <div id="suggestions" class="list-group"></div>
+        <datalist id="search-suggestions"></datalist>
+      </div>
     </div>
+    
+    <div class="row">
+      <!-- Menu Section -->
+      <div class="col-md-8" id="menuList">
+        <div class="row" id="dishContainer">
+          <!-- Dishes dynamically injected -->
+        </div>
+      </div>
 
+      <!-- ✅ Updated Bill Section -->
+      <div class="col-md-4">
+        <div class="card bill-box shadow-lg">
+          <div class="card-header bg-dark text-white bill-header">
+            <h4>🍴 Royal Palace Hotel</h4>
+            <small>123 MG Road, Patna | +91-9876543210</small><br>
+            <small id="billDate"></small>
+          </div>
+
+          <div class="card-body p-2">
+            <table class="table table-sm table-bordered text-center align-middle">
+              <thead class="table-secondary">
+                <tr>
+                  <th>Items</th>
+                  <th>Rate</th>
+                  <th>Qty</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="cartTable">
+                <tr><td colspan="4">No items added yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card-footer bill-footer">
+            <table class="table table-sm mb-2">
+              <tr>
+                <td><b>Total</b></td>
+                <td class="text-end">₹<span id="totalAmount">0</span></td>
+              </tr>
+              <tr>
+                <td><b>Tax (5%)</b></td>
+                <td class="text-end">₹<span id="taxAmount">0</span></td>
+              </tr>
+              <tr>
+                <td><b>Payable</b></td>
+                <td class="text-end fw-bold">₹<span id="payableAmount">0</span></td>
+              </tr>
+            </table>
+            <button class="btn btn-success w-100">Pay Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<p class="invisible">{{dishes}}</p>
 {% endblock %}

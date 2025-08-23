@@ -1,0 +1,61 @@
+    body {
+        background: #f8f9fa;
+    }
+
+    .menu-card {
+        margin-bottom: 15px;
+    }
+
+    .bill-box {
+        position: sticky;
+        top: 20px;
+    }
+
+    .bill-header {
+        text-align: center;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .bill-footer {
+        border-top: 2px dashed #ccc;
+        padding-top: 10px;
+        margin-top: 10px;
+    }
+
+    #search-suggestions {
+        width: 100%;
+    }
+
+    datalist {
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 100%;
+        padding: 6px;
+        font-family: sans-serif;
+        font-size: 18px;
+        /* 🔥 text size badha diya */
+    }
+
+    option {
+        padding: 8px;
+        /* 🔥 spacing badhayi */
+        cursor: pointer;
+        font-size: 18px;
+        /* 🔥 option text size */
+    }
+
+    option:hover {
+        background-color: #f1f1f1;
+    }
+
+    #suggestions {
+        position: absolute;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+    }

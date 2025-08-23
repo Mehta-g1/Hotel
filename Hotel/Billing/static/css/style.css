@@ -1,3 +1,112 @@
-p{
-    display: none;
-}
+    body {
+        background: #f8f9fa;
+    }
+
+    .menu-card {
+        margin-bottom: 15px;
+    }
+
+    .bill-box {
+        position: sticky;
+        top: 20px;
+    }
+
+    .bill-header {
+        text-align: center;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .bill-footer {
+        border-top: 2px dashed #ccc;
+        padding-top: 10px;
+        margin-top: 10px;
+    }
+
+    #search-suggestions {
+        width: 100%;
+    }
+
+    datalist {
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        width: 100%;
+        padding: 6px;
+        font-family: sans-serif;
+        font-size: 18px;
+        /* 🔥 text size badha diya */
+    }
+
+    option {
+        padding: 8px;
+        /* 🔥 spacing badhayi */
+        cursor: pointer;
+        font-size: 18px;
+        /* 🔥 option text size */
+    }
+
+    option:hover {
+        background-color: #f1f1f1;
+    }
+
+    #suggestions {
+        position: absolute;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+    }
+
+
+    .invisible{
+        display: none;
+    }
+
+
+        /* body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    } */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #343a40;
+      color: white;
+      position: fixed;
+      left: -250px; /* Hidden by default */
+      top: 0;
+      transition: all 0.3s;
+      padding-top: 20px;
+      z-index: 1000;
+    }
+    .sidebar.active {
+      left: 0; /* Show sidebar */
+    }
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: block;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      background: #495057;
+      border-radius: 5px;
+    }
+    .content {
+      margin-left: 0;
+      transition: margin-left 0.3s;
+      padding: 20px;
+    }
+    .content.active {
+      margin-left: 250px; /* shift content when sidebar open */
+    }
+    .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+      color: #343a40;
+      padding: 10px 20px;
+    }
