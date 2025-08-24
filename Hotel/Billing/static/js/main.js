@@ -154,7 +154,6 @@ function removeFromCart(id) {
 //     document.getElementById("payableAmount").value = "₹" + PayableAmount;
 // }
 
-
 function renderCart() {
     const cartTable = document.getElementById("cartTable");
     cartTable.innerHTML = "";
@@ -203,15 +202,16 @@ function renderCart() {
 
     // ye input ke value ko update karega
     if (document.getElementById("totalAmount")) {
-        document.getElementById("totalAmount").value = TotalAmount;
+        document.getElementById("totalAmount").value = "₹" + TotalAmount;
     }
     if (document.getElementById("taxAmount")) {
-        document.getElementById("taxAmount").value = TaxAmount;
+        document.getElementById("taxAmount").value = "₹" + TaxAmount;
     }
     if (document.getElementById("payableAmount")) {
-        document.getElementById("payableAmount").value = PayableAmount;
+        document.getElementById("payableAmount").value = "₹" + PayableAmount;
     }
 }
+
 
 // Search box functionality
 document.getElementById("searchBox").addEventListener("input", e => {
