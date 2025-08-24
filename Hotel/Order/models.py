@@ -5,9 +5,9 @@ class Categories(models.Model):
     category_name = models.CharField(max_length=100)
     added_date = models.TimeField(auto_now_add=True)
 
-
     def __str__(self):
         return self.category_name
+
 
 class Dishes(models.Model):
     ch = [("SG", "Signature"), ("SP", "Spicy"), ("SP", "Special")]
