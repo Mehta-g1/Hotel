@@ -1,0 +1,36 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment files
+.env
+*.env
+
+# IDE/Editor settings
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Django stuff
+db.sqlite3
+media/
+
+# Flask/Django logs
+*.log
+
+# Node/JS (agar use ho)
+node_modules/
+dist/
+build/
+
+# Compiled static files
+staticfiles/
