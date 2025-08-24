@@ -2,15 +2,10 @@ from django.shortcuts import render
 from .models import *
 from django.http import HttpResponse
 from Order.models import *
+
+
 def Home(request):
     cashier = Cashier.objects.all()[0].chashier_name
-    # dishes = [
-    #     { 'id': 1, 'name': "Paneer Butter Masala", 'description': "Creamy paneer curry", 'price': 250, 'category': "Main Course" },
-    #     { 'id': 2, 'name': "Veg Biryani", 'description': "Fragrant rice with veggies", 'price': 180, 'category': "Rice" },
-    #     { 'id': 3, 'name': "Chicken Biryani", 'description': "Hyderabadi style chicken rice", 'price': 220, 'category': "Rice" },
-    #     { 'id': 4, 'name': "Dal Tadka", 'description': "Yellow dal with tadka", 'price': 150, 'category': "Main Course" },
-    #     { 'id': 5, 'name': "Chole Bhature", 'description': "Spicy chana with bhature", 'price': 120, 'category': "Snacks" }
-    # ]
     dishes = []
     d = Dishes.objects.all()
     for e in d:
@@ -27,6 +22,12 @@ def Home(request):
 
 def Reports(request):
     return HttpResponse("Daily Reports")
+
+def PrintBill(request, bill_no):
+    Bill.objects.create()
+    id=''
+    bill=""
+    return render(request, 'order.html',{'GenerateBill':True, 'billID':id,'bill':bill})
 
 
 

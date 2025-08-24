@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-mik$5@4&f($tmuf@2q_-ip+3@uesdtu9-$1t_jg6)rs)ak6zkk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "Order",
     "Act",
     "Billing",
+    "django_browser_reload",
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "Hotel.urls"

@@ -100,6 +100,7 @@
       margin-left: 0;
       transition: margin-left 0.3s;
       padding: 20px;
+      width: 80%;
     }
     .content.active {
       margin-left: 250px; /* shift content when sidebar open */
@@ -107,6 +108,35 @@
     .menu-btn {
       font-size: 24px;
       cursor: pointer;
-      color: #343a40;
+      color: #edf1f4;
       padding: 10px 20px;
+    }
+
+    .bill-section{
+      margin-top: -55px;
+
+    }
+
+    .search-wala{
+      margin-top: -20px;
+    }
+
+    .heading-top{
+      text-align: center;
+      margin-top: -50px;
+      margin-bottom: 50px;
+      color: #39ff14;
+      background-color:#FF512F → #DD2476 → #FDC830;
+      font-weight: bolder;
+      font-family:cursive;
+    }
+
+    body{
+      background: linear-gradient(135deg, #6f2781, #3b548e, #843867);
+    }
+
+    .dish-card{
+      background: linear-gradient(135deg, #ffd0007c, #ff800089);
+      color: #222;
+      box-shadow: 0 6px 20px rgba(132, 42, 155, 0.3);
     }
