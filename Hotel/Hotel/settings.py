@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -70,7 +72,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "Hotel.wsgi.application"
+# WSGI_APPLICATION = "Hotel.wsgi.application"
+ASGI_APPLICATION = "Hotel.asgi.application"
+
 
 
 # Database

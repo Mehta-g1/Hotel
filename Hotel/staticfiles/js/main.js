@@ -1,4 +1,21 @@
+const ws = new WebSocket('ws://127.0.0.1:8000/ws/ac/');
+ws.onopen = function () {
+    console.log("WebSocket Connection Open ...")
+    ws.send("Hii, Message from client")
+}
+ws.onmessage = function (event) {
+    console.log("Message Received from server ....", event)
+}
+ws.onerror = function (event) {
+    console.log("WebSocket Error Occured ....", event)
+}
 
+ws.onclose = function (event) {
+    console.log("WebSocket connection closed ...", event)
+}
+
+
+/*
 let dishes = document.querySelector(".invisible").innerHTML
 function convertToArray(str) {
     // step 1: single quotes ko double quotes me badalna
@@ -11,8 +28,7 @@ function convertToArray(str) {
 }
 
 dishes = convertToArray(dishes)
-console.log(typeof(dishes))
-console.log(dishes)
+
 
 let cart = {};
 
@@ -41,8 +57,8 @@ function renderDishes(filter = "") {
     }
     filtered.forEach(dish => {
         container.innerHTML += `
-      <div class="col-md-6">
-        <div class="card menu-card shadow-sm p-2">
+      <div class="col-md-6 ">
+        <div class="card menu-card shadow-sm p-2 dish-card">
           <div class="card-body">
             <h5>${dish.id}. ${dish.name}</h5>
             <p>${dish.description}</p>
@@ -81,10 +97,6 @@ document.getElementById("searchBox").addEventListener("keydown", e => {
 
 
 
-
-
-
-
 // Add to Cart
 function addToCart(id) {
     const dish = dishes.find(d => d.id === id);
@@ -105,41 +117,113 @@ function removeFromCart(id) {
     renderCart();
 }
 
-// Render Cart
+
+
+// function renderCart() {
+//     const cartTable = document.getElementById("cartTable");
+//     cartTable.innerHTML = "";
+//     let total = 0;
+//     let i = 0;
+
+//     for (let key in cart) {
+//         const item = cart[key];
+//         const itemTotal = item.price * item.qty; // per item total
+//         total += itemTotal;
+
+//         cartTable.innerHTML += `
+//       <tr>
+//         <td><input type="number" value="${++i}" readonly class="form-control"/></td>
+//         <input style="display:none;" type="text" name="id" value="${item.id}">
+//         <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name" value="${item.name}" readonly class="form-control"/></td>
+//         <td><input type="text" name="item_price" value="₹${item.price}" readonly class="form-control"/></td>
+//         <td>
+//           <input type="text" name="item_qty" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
+//           <button type="button" class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
+//         </td>
+//         <td><input type="text" name="item_total[]" value="₹${itemTotal}" readonly class="form-control"/></td>
+//       </tr>
+//     `;
+//     }
+
+//     if (Object.keys(cart).length === 0) {
+//         cartTable.innerHTML = `<tr><td colspan="5">No items added yet.</td></tr>`;
+//     }
+
+//     const tax = total * 0.05;
+//     const payable = total + tax;
+
+//     // Correct variable definitions
+//     let TotalAmount = total.toFixed(2);
+//     let TaxAmount = tax.toFixed(2);
+//     let PayableAmount = payable.toFixed(2);
+
+//     console.log(TotalAmount);
+//     console.log(TaxAmount);
+//     console.log(PayableAmount);
+//     console.log("-------------------------\n");
+
+//     // document.getElementById("totalAmount").value = TotalAmount;
+//     // document.getElementById("taxAmount").value = TaxAmount;
+//     // document.getElementById("payableAmount").value = PayableAmount;
+
+//     document.getElementById("totalAmount").value = "₹" + TotalAmount;
+//     document.getElementById("taxAmount").value = "₹" + TaxAmount;
+//     document.getElementById("payableAmount").value = "₹" + PayableAmount;
+// }
+
 function renderCart() {
     const cartTable = document.getElementById("cartTable");
     cartTable.innerHTML = "";
     let total = 0;
+    let i = 0;
 
     for (let key in cart) {
         const item = cart[key];
-        const itemTotal = item.price * item.qty;
+        const itemTotal = item.price * item.qty; // per item total
         total += itemTotal;
 
         cartTable.innerHTML += `
-      <tr>
-        <input>${item.name}</input>
-        <input>₹${item.price}</input>
-        <td>
-          ${item.qty}
-          <button class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
-        </td>
-        <input>₹${itemTotal}</input>
-      </tr>
-    `;
+          <tr>
+            <td><input type="number" value="${++i}" readonly class="form-control"/></td>
+            <input style="display:none;" type="text" name="id[${i}]" value="${item.id}">
+            <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name[${i}]" value="${item.name}" readonly class="form-control"/></td>
+            <td><input type="text" name="item_price" value="₹${item.price}" readonly class="form-control"/></td>
+            <td>
+              <input type="text" name="item_qty[${i}]" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
+              <button type="button" class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
+            </td>
+            <td><input type="text" name="item_total[]" value="₹${itemTotal}" readonly class="form-control"/></td>
+          </tr>
+        `;
     }
 
+    // yaha problem tha: tumne backtick (`) use nahi kiya tha
     if (Object.keys(cart).length === 0) {
-        cartTable.innerHTML = `<tr><td colspan="4">No items added yet.</td></tr>`;
+        cartTable.innerHTML = `
+          <tr><td colspan="5">No items added yet.</td></tr>
+        `;
     }
 
     const tax = total * 0.05;
     const payable = total + tax;
 
-    document.getElementById("totalAmount").innerText = total.toFixed(2);
-    document.getElementById("taxAmount").innerText = tax.toFixed(2);
-    document.getElementById("payableAmount").innerText = payable.toFixed(2);
+    // Correct variable definitions
+    let TotalAmount = total.toFixed(2);
+    let TaxAmount = tax.toFixed(2);
+    let PayableAmount = payable.toFixed(2);
+
+    console.log("Total:", TotalAmount);
+    console.log("Tax:", TaxAmount);
+    console.log("Payable:", PayableAmount);
+    console.log("-------------------------\n");
+
+    // ye input ke value ko update karega
+    document.getElementById("totalAmount").innerHTML = TotalAmount;
+    document.getElementById("taxAmount").innerHTML = TaxAmount;
+    document.getElementById("payableAmount").innerHTML =  PayableAmount;
+
 }
+
 
 // Search box functionality
 document.getElementById("searchBox").addEventListener("input", e => {
@@ -278,11 +362,11 @@ document.head.appendChild(style);
 
 
 
-    let menuBtn = document.getElementById("menu-btn");
-    let sidebar = document.getElementById("sidebar");
-    let content = document.getElementById("content");
+let menuBtn = document.getElementById("menu-btn");
+let sidebar = document.getElementById("sidebar");
+let content = document.getElementById("content");
 
-    menuBtn.onclick = function() {
-      sidebar.classList.toggle("active");
-      content.classList.toggle("active");
-    }
+menuBtn.onclick = function () {
+    sidebar.classList.toggle("active");
+    content.classList.toggle("active");
+}*/

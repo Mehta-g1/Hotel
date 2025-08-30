@@ -1,19 +1,38 @@
+const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
 
-let dishes = document.querySelector(".invisible").innerHTML
-function convertToArray(str) {
-    // step 1: single quotes ko double quotes me badalna
-    let jsonStr = str.replace(/'/g, '"');
-
-    // step 2: parse karke array banana
-    let arr = JSON.parse(jsonStr);
-
-    return arr;
+ws.onopen = function () {
+    console.log("WebSocket Connection Open ...");
+    ws.send("send dishes");
 }
 
-dishes = convertToArray(dishes)
-
-
+let dishes = []; // global dishes array
 let cart = {};
+
+ws.onmessage = function (event) {
+    try {
+        let data = JSON.parse(event.data); // ✅ server se aaya data JSON parse karo
+        console.log("Message Received from server ....", data);
+
+        // Agar data dishes ka object hai to usko array me badlo
+        dishes = data
+
+        // Server se data aate hi dishes ko render karo
+        renderDishes();
+        populateSearchSuggestions();
+
+    } catch (e) {
+        console.error("Error parsing server data:", e, event.data);
+    }
+}
+
+ws.onerror = function (event) {
+    console.log("WebSocket Error Occurred ....", event);
+}
+
+ws.onclose = function (event) {
+    console.log("WebSocket connection closed ...", event);
+}
+
 
 // Render Dishes
 function renderDishes(filter = "") {
@@ -101,58 +120,6 @@ function removeFromCart(id) {
 }
 
 
-
-// function renderCart() {
-//     const cartTable = document.getElementById("cartTable");
-//     cartTable.innerHTML = "";
-//     let total = 0;
-//     let i = 0;
-
-//     for (let key in cart) {
-//         const item = cart[key];
-//         const itemTotal = item.price * item.qty; // per item total
-//         total += itemTotal;
-
-//         cartTable.innerHTML += `
-//       <tr>
-//         <td><input type="number" value="${++i}" readonly class="form-control"/></td>
-//         <input style="display:none;" type="text" name="id" value="${item.id}">
-//         <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name" value="${item.name}" readonly class="form-control"/></td>
-//         <td><input type="text" name="item_price" value="₹${item.price}" readonly class="form-control"/></td>
-//         <td>
-//           <input type="text" name="item_qty" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
-//           <button type="button" class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
-//         </td>
-//         <td><input type="text" name="item_total[]" value="₹${itemTotal}" readonly class="form-control"/></td>
-//       </tr>
-//     `;
-//     }
-
-//     if (Object.keys(cart).length === 0) {
-//         cartTable.innerHTML = `<tr><td colspan="5">No items added yet.</td></tr>`;
-//     }
-
-//     const tax = total * 0.05;
-//     const payable = total + tax;
-
-//     // Correct variable definitions
-//     let TotalAmount = total.toFixed(2);
-//     let TaxAmount = tax.toFixed(2);
-//     let PayableAmount = payable.toFixed(2);
-
-//     console.log(TotalAmount);
-//     console.log(TaxAmount);
-//     console.log(PayableAmount);
-//     console.log("-------------------------\n");
-
-//     // document.getElementById("totalAmount").value = TotalAmount;
-//     // document.getElementById("taxAmount").value = TaxAmount;
-//     // document.getElementById("payableAmount").value = PayableAmount;
-
-//     document.getElementById("totalAmount").value = "₹" + TotalAmount;
-//     document.getElementById("taxAmount").value = "₹" + TaxAmount;
-//     document.getElementById("payableAmount").value = "₹" + PayableAmount;
-// }
 
 function renderCart() {
     const cartTable = document.getElementById("cartTable");
