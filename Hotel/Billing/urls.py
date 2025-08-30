@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('',views.Home, name = "Billing_Home"),
-    path('bill/<int:id>',views.PrintBill, name = "Billing")
+    path('checkout/',views.checkout, name = "checkout/")
 
 ]

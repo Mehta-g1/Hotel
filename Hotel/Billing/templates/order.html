@@ -41,16 +41,16 @@
       </div>
     </div>
     
-    <div class="row">
+    <div class="row mb-5">
       <!-- Menu Section -->
-      <div class="col-md-7" id="menuList">
+      <div class="col-md-7 " id="menuList">
         <div class="row" id="dishContainer">
           <!-- Dishes dynamically injected -->
         </div>
       </div>
 
       <!-- ✅ Updated Bill Section -->
-      <div class="col-md-5 bill-section position-absolute end-0 mb-4">
+      <div class="col-md-5 bill-section position-absolute end-0 ">
         <div class="card bill-box shadow-lg">
           <div class="card-header bg-dark text-white bill-header">
             <h4>🍴 Royal Palace Hotel</h4>
@@ -59,6 +59,8 @@
           </div>
 
           <div class="card-body p-2">
+          <form method="POST" class="form-control" action="{% url 'checkout/' %}">
+            {% csrf_token %}
             <table class="table table-lg table-bordered text-center align-middle">
               <thead class="table-secondary">
                 <tr>
@@ -69,40 +71,38 @@
                   <th>Total</th>
                 </tr>
               </thead>
-              <form method="POST" class="form-control ">
-                <tbody id="cartTable">
-                  
-                  <tr><td colspan="4">No items added yet.</td></tr>
-                </tbody>
-              </form>
+              <tbody id="cartTable">
+                <tr><td colspan="5">No items added yet.</td></tr>
+              </tbody>
             </table>
-          </div>
 
-          <div class="card-footer bill-footer">
-            <table class="table table-sm mb-2">
-              <tr>
-                <td><b>Total</b></td>
-                <td class="text-end">₹<span id="totalAmount">0</span></td>
-              </tr>
-              <tr>
-                <td><b>Tax (5%)</b></td>
-                <td class="text-end">₹<span id="taxAmount">0</span></td>
-              </tr>
-              <tr>
-                <td><b>Payable</b></td>
-                <td class="text-end fw-bold">₹<span id="payableAmount">0</span></td>
-              </tr>
-            </table>
-            <a class="btn btn-success w-100" src="#">Pay Now</a>
-          </div>
+            <div class="card-footer bill-footer">
+              <table class="table table-sm mb-2">
+                <tr>
+                  <td><b>Total</b></td>
+                  <td class="text-end">₹<span id="totalAmount">0</span></td>
+                </tr>
+                <tr>
+                  <td><b>Tax (5%)</b></td>
+                  <td class="text-end">₹<span id="taxAmount">0</span></td>
+                </tr>
+                <tr>
+                  <td><b>Payable</b></td>
+                  <td class="text-end fw-bold">₹<span id="payableAmount">0</span></td>
+                </tr>
+              </table>
+              <!-- ✅ Correct button -->
+              <button type="submit" class="btn btn-success w-100">Pay Now</button>
+            </div>
+          </form>
         </div>
-      </div>
     </div>
   </div>
 <p class="invisible">{{dishes}}</p>
 
 {% if GenerateBill %}
   <p class="showBill">{{GenerateBill}}</p>
+  <p>{{total}}</p>
 {% endif %}
 
 {% endblock %}

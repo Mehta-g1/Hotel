@@ -168,11 +168,11 @@ function renderCart() {
         cartTable.innerHTML += `
           <tr>
             <td><input type="number" value="${++i}" readonly class="form-control"/></td>
-            <input style="display:none;" type="text" name="id" value="${item.id}">
-            <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name" value="${item.name}" readonly class="form-control"/></td>
+            <input style="display:none;" type="text" name="id[${i}]" value="${item.id}">
+            <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name[${i}]" value="${item.name}" readonly class="form-control"/></td>
             <td><input type="text" name="item_price" value="₹${item.price}" readonly class="form-control"/></td>
             <td>
-              <input type="text" name="item_qty" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
+              <input type="text" name="item_qty[${i}]" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
               <button type="button" class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
             </td>
             <td><input type="text" name="item_total[]" value="₹${itemTotal}" readonly class="form-control"/></td>
@@ -201,15 +201,10 @@ function renderCart() {
     console.log("-------------------------\n");
 
     // ye input ke value ko update karega
-    if (document.getElementById("totalAmount")) {
-        document.getElementById("totalAmount").value = "₹" + TotalAmount;
-    }
-    if (document.getElementById("taxAmount")) {
-        document.getElementById("taxAmount").value = "₹" + TaxAmount;
-    }
-    if (document.getElementById("payableAmount")) {
-        document.getElementById("payableAmount").value = "₹" + PayableAmount;
-    }
+    document.getElementById("totalAmount").innerHTML = TotalAmount;
+    document.getElementById("taxAmount").innerHTML = TaxAmount;
+    document.getElementById("payableAmount").innerHTML =  PayableAmount;
+
 }
 
 
