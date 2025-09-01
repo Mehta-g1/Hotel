@@ -18,8 +18,8 @@ ws.onmessage = function (event) {
 
         // Server se data aate hi dishes ko render karo
         renderDishes();
-        populateSearchSuggestions();
 
+        
     } catch (e) {
         console.error("Error parsing server data:", e, event.data);
     }
@@ -35,29 +35,15 @@ ws.onclose = function (event) {
 
 
 // Render Dishes
-function renderDishes(filter = "") {
+function renderDishes(dishesToRender = dishes) {
     const container = document.getElementById("dishContainer");
     container.innerHTML = "";
 
-    let filtered;
-
-    if (filter.trim() === "") {
-        filtered = dishes;
-    } else if (!isNaN(filter)) {
-        // Agar number hai → exact match by parseInt
-        filtered = dishes.filter(d => d.id === parseInt(filter));
-    } else {
-        // Agar text hai → name me search
-        filtered = dishes.filter(d =>
-            d.name.toLowerCase().includes(filter.toLowerCase())
-        );
-    }
-
-    if (filtered.length === 0) {
+    if (dishesToRender.length === 0) {
         container.innerHTML = `<p class="text-danger">❌ No dishes found</p>`;
         return;
     }
-    filtered.forEach(dish => {
+    dishesToRender.forEach(dish => {
         container.innerHTML += `
       <div class="col-md-6 ">
         <div class="card menu-card shadow-sm p-2 dish-card">
@@ -72,32 +58,6 @@ function renderDishes(filter = "") {
     `;
     });
 }
-
-// Enter key ka fix
-document.getElementById("searchBox").addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        const filter = e.target.value.trim();
-        let filtered;
-
-        if (!isNaN(filter)) {
-            // Number → exact id match (parseInt)
-            filtered = dishes.filter(d => d.id === parseInt(filter));
-        } else {
-            // Text → name search
-            filtered = dishes.filter(d =>
-                d.name.toLowerCase().includes(filter.toLowerCase())
-            );
-        }
-
-        if (filtered.length === 1) {
-            addToCart(filtered[0].id);
-            e.target.value = "";
-            renderDishes();
-        }
-    }
-});
-
-
 
 // Add to Cart
 function addToCart(id) {
@@ -138,20 +98,18 @@ function renderCart() {
             <input style="display:none;" type="text" name="id[${i}]" value="${item.id}">
             <td style="width:40%;"><input type="text" style="font-weight:bold;" name="item_name[${i}]" value="${item.name}" readonly class="form-control"/></td>
             <td><input type="text" name="item_price" value="₹${item.price}" readonly class="form-control"/></td>
-            <td>
-              <input type="text" name="item_qty[${i}]" value="${item.qty}" readonly class="form-control qty d-inline w-50"/>
-              <button type="button" class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${item.id})">-</button>
+            <td class="d-flex align-items-center justify-content-center">
+                <button type="button" class="btn btn-sm btn-danger me-2" onclick="removeFromCart(${item.id})" >-</button>
+                <input type="text" name="item_qty[${i}]" value="${item.qty}" readonly class="form-control qty text-center" style="width: 50px;"/>
+                <button type="button" class="btn btn-sm btn-success ms-2" onclick="addToCart(${item.id})">+</button>
             </td>
             <td><input type="text" name="item_total[]" value="₹${itemTotal}" readonly class="form-control"/></td>
           </tr>
         `;
     }
 
-    // yaha problem tha: tumne backtick (`) use nahi kiya tha
     if (Object.keys(cart).length === 0) {
-        cartTable.innerHTML = `
-          <tr><td colspan="5">No items added yet.</td></tr>
-        `;
+        cartTable.innerHTML = "<tr><td colspan=\"5\">No items added yet.</td></tr>";
     }
 
     const tax = total * 0.05;
@@ -175,141 +133,115 @@ function renderCart() {
 }
 
 
-// Search box functionality
-document.getElementById("searchBox").addEventListener("input", e => {
-    renderDishes(e.target.value);
-});
-
-document.getElementById("searchBox").addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-        const filter = e.target.value;
-        const filtered = dishes.filter(d =>
-            d.name.toLowerCase().includes(filter.toLowerCase()) ||
-            d.id.toString().includes(filter)
-        );
-
-        if (filtered.length === 1) {
-            addToCart(filtered[0].id);
-            e.target.value = "";
-            renderDishes();
-        }
-    }
-});
-
 // Bill Date
 document.getElementById("billDate").innerText = "Date: " + new Date().toLocaleString();
 
 // Init
 renderDishes();
 
-// Populate datalist
-function populateSearchSuggestions() {
-    const datalist = document.getElementById("search-suggestions");
-    dishes.forEach(dish => {
-        const option = document.createElement('option');
-        option.value = dish.name;
-        datalist.appendChild(option);
-    });
-}
-populateSearchSuggestions();
 
 // Auto focus search bar
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("searchBox").focus();
 });
 
-// Suggestions dropdown
 const searchBox = document.getElementById("searchBox");
 const suggestionsBox = document.getElementById("suggestions");
-const dishNames = dishes.map(d => d.name);
-
-let currentIndex = -1; // track arrow selection
+let currentIndex = -1;
 
 searchBox.addEventListener("input", function () {
-    const query = this.value.toLowerCase();
+    const query = this.value.toLowerCase().trim();
     suggestionsBox.innerHTML = "";
     currentIndex = -1;
 
     if (query.length === 0) {
         suggestionsBox.style.display = "none";
+        renderDishes(); // Show all dishes when search is cleared
         return;
     }
 
-    const filtered = dishNames.filter(name => name.toLowerCase().includes(query));
+    const filteredDishes = dishes.filter(dish => {
+        const dishName = dish.name.toLowerCase();
+        // Make sure category exists and is a string before calling toLowerCase
+        const dishCategory = (dish.category && typeof dish.category === 'string') ? dish.category.toLowerCase() : '';
+        const dishId = dish.id.toString();
+        return dishName.includes(query) || dishCategory.includes(query) || dishId.includes(query);
+    });
 
-    if (filtered.length === 0) {
+    if (filteredDishes.length === 0) {
         suggestionsBox.style.display = "none";
         return;
     }
 
-    if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-danger">❌ No dishes found</p>`;
-        return;
-    }
-    filtered.forEach((name, index) => {
-        const option = document.createElement("a");
-        option.classList.add("list-group-item", "list-group-item-action");
-        option.textContent = name;
-
-        option.onclick = () => {
-            searchBox.value = name;
+    filteredDishes.forEach(dish => {
+        const suggestionItem = document.createElement("a");
+        suggestionItem.classList.add("list-group-item", "list-group-item-action");
+        suggestionItem.textContent = `${dish.name} (${dish.category}) - ₹${dish.price}`;
+        suggestionItem.onclick = () => {
+            addToCart(dish.id);
+            searchBox.value = "";
+            suggestionsBox.innerHTML = "";
             suggestionsBox.style.display = "none";
-            renderDishes(name);
+            renderDishes();
         };
-
-        suggestionsBox.appendChild(option);
+        suggestionsBox.appendChild(suggestionItem);
     });
 
     suggestionsBox.style.display = "block";
     suggestionsBox.style.width = searchBox.offsetWidth + "px";
 });
 
-// Keyboard navigation
 searchBox.addEventListener("keydown", function (e) {
-    const options = suggestionsBox.getElementsByTagName("a");
-    if (options.length === 0) return;
+    const suggestions = suggestionsBox.getElementsByTagName("a");
+    if (suggestions.length === 0) return;
 
     if (e.key === "ArrowDown") {
-        // नीचे जाएं
         e.preventDefault();
-        currentIndex = (currentIndex + 1) % options.length;
-        highlightOption(options);
+        currentIndex++;
+        if (currentIndex >= suggestions.length) {
+            currentIndex = 0;
+        }
+        highlightSuggestion(suggestions);
     } else if (e.key === "ArrowUp") {
-        // ऊपर जाएं
         e.preventDefault();
-        currentIndex = (currentIndex - 1 + options.length) % options.length;
-        highlightOption(options);
+        currentIndex--;
+        if (currentIndex < 0) {
+            currentIndex = suggestions.length - 1;
+        }
+        highlightSuggestion(suggestions);
     } else if (e.key === "Enter") {
-        // Select करें
         e.preventDefault();
-        if (currentIndex >= 0 && options[currentIndex]) {
-            searchBox.value = options[currentIndex].textContent;
-            suggestionsBox.style.display = "none";
-            renderDishes(searchBox.value);
+        if (currentIndex > -1) {
+            suggestions[currentIndex].click();
         }
     }
 });
 
-function highlightOption(options) {
-    for (let i = 0; i < options.length; i++) {
-        options[i].classList.remove("active-option");
+function highlightSuggestion(suggestions) {
+    for (let i = 0; i < suggestions.length; i++) {
+        suggestions[i].classList.remove("active-option");
     }
-    if (currentIndex >= 0) {
-        options[currentIndex].classList.add("active-option");
+    if (currentIndex > -1) {
+        suggestions[currentIndex].classList.add("active-option");
     }
 }
 
 // Green highlight ke liye CSS add karo
 const style = document.createElement("style");
-style.innerHTML = `
+style.innerHTML = " 
   .active-option {
     background-color: green !important;
     color: white !important;
   }
-`;
+";
 document.head.appendChild(style);
 
-
+// Hide suggestions when clicking outside
+document.addEventListener("click", function(event) {
+    if (!searchBox.contains(event.target)) {
+        suggestionsBox.style.display = "none";
+    }
+});
 
 
 let menuBtn = document.getElementById("menu-btn");
