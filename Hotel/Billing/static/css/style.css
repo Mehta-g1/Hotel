@@ -1,142 +1,190 @@
-    body {
-        background: #f8f9fa;
-    }
+/* General Body Styles */
+body {
+    background: linear-gradient(135deg, #6f2781, #3b548e, #843867);
+    color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    .menu-card {
-        margin-bottom: 15px;
-    }
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #343a40;
+    color: white;
+    position: fixed;
+    left: -250px; /* Hidden by default */
+    top: 0;
+    transition: all 0.3s;
+    padding-top: 20px;
+    z-index: 1000;
+}
 
-    .bill-box {
-        position: sticky;
-        top: 20px;
-    }
+.sidebar.active {
+    left: 0; /* Show sidebar */
+}
 
-    .bill-header {
-        text-align: center;
-        border-bottom: 2px dashed #ccc;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
+.sidebar h4 {
+    font-weight: bold;
+}
 
-    .bill-footer {
-        border-top: 2px dashed #ccc;
-        padding-top: 10px;
-        margin-top: 10px;
-    }
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    transition: 0.3s;
+}
 
-    #search-suggestions {
-        width: 100%;
-    }
+.sidebar a:hover {
+    background: #495057;
+    border-radius: 5px;
+}
 
-    datalist {
-        position: absolute;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        width: 100%;
-        padding: 6px;
-        font-family: sans-serif;
-        font-size: 18px;
-        /* 🔥 text size badha diya */
-    }
+/* Content Area */
+.content {
+    margin-left: 0;
+    transition: margin-left 0.3s;
+    padding: 20px;
+}
 
-    option {
-        padding: 8px;
-        /* 🔥 spacing badhayi */
-        cursor: pointer;
-        font-size: 18px;
-        /* 🔥 option text size */
-    }
+.content.active {
+    margin-left: 250px; /* Shift content when sidebar is open */
+}
 
-    option:hover {
-        background-color: #f1f1f1;
-    }
+.menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: #edf1f4;
+    padding: 10px 20px;
+}
 
-    #suggestions {
-        position: absolute;
-        z-index: 1000;
-        max-height: 200px;
-        overflow-y: auto;
-        display: none;
-    }
+/* Heading */
+.heading-top {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #39ff14;
+    font-weight: bolder;
+    font-family: cursive;
+}
 
+/* Search Bar */
+.search-wala {
+    margin-bottom: 30px;
+}
 
-    .invisible{
-        display: none;
-    }
+#suggestions {
+    position: absolute;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    border-radius: 5px;
+}
 
+/* Dish Cards */
+.dish-card {
+    background: linear-gradient(135deg, #ffd0007c, #ff800089);
+    color: #222;
+    box-shadow: 0 6px 20px rgba(132, 42, 155, 0.3);
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+}
 
-        /* body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    } */
-    .sidebar {
-      width: 250px;
-      height: 100vh;
-      background: #343a40;
-      color: white;
-      position: fixed;
-      left: -250px; /* Hidden by default */
-      top: 0;
-      transition: all 0.3s;
-      padding-top: 20px;
-      z-index: 1000;
-    }
-    .sidebar.active {
-      left: 0; /* Show sidebar */
-    }
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      padding: 12px 20px;
-      display: block;
-      transition: 0.3s;
-    }
-    .sidebar a:hover {
-      background: #495057;
-      border-radius: 5px;
-    }
-    .content {
-      margin-left: 0;
-      transition: margin-left 0.3s;
-      padding: 20px;
-      width: 80%;
+/* Bill Section */
+.bill-section {
+    position: sticky;
+    top: 20px;
+}
+
+.bill-box {
+    background-color: #343a40;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.bill-header {
+    text-align: center;
+    padding: 15px;
+    border-bottom: 1px solid #495057;
+}
+
+.bill-header h4 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.bill-header small {
+    font-size: 0.85rem;
+    color: #adb5bd;
+}
+
+.bill-box .card-body {
+    padding: 0;
+}
+
+.bill-box .table {
+    margin-bottom: 0;
+    color: #f8f9fa;
+}
+
+.bill-box .table thead th {
+    border-bottom: 2px solid #495057;
+    font-weight: 600;
+}
+
+.bill-box .table td, .bill-box .table th {
+    border-top: 1px solid #495057;
+    vertical-align: middle;
+}
+
+.bill-box .qty {
+    font-weight: bold;
+}
+
+.bill-footer {
+    padding: 15px;
+    border-top: 1px solid #495057;
+}
+
+.bill-footer .table {
+    margin-bottom: 1rem;
+}
+
+.bill-footer .table td {
+    border: none;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .bill-section {
+        position: static;
+        margin-top: 30px;
     }
     .content.active {
-      margin-left: 250px; /* shift content when sidebar open */
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        left: 0;
+        display: none; /* Initially hidden on small screens */
+    }
+    .sidebar.active {
+        display: block;
+    }
+    .content {
+        margin-left: 0 !important;
     }
     .menu-btn {
-      font-size: 24px;
-      cursor: pointer;
-      color: #edf1f4;
-      padding: 10px 20px;
+        display: block;
     }
+}
 
-    .bill-section{
-      margin-top: -55px;
-
-    }
-
-    .search-wala{
-      margin-top: -20px;
-    }
-
-    .heading-top{
-      text-align: center;
-      margin-top: -50px;
-      margin-bottom: 50px;
-      color: #39ff14;
-      background-color:#FF512F → #DD2476 → #FDC830;
-      font-weight: bolder;
-      font-family:cursive;
-    }
-
-    body{
-      background: linear-gradient(135deg, #6f2781, #3b548e, #843867);
-    }
-
-    .dish-card{
-      background: linear-gradient(135deg, #ffd0007c, #ff800089);
-      color: #222;
-      box-shadow: 0 6px 20px rgba(132, 42, 155, 0.3);
-    }
+.invisible {
+    display: none;
+}
