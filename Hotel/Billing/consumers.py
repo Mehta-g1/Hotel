@@ -105,6 +105,7 @@ class MySyncConsumer(SyncConsumer):
             except Exception as e:
                 print(e)
 
+
             data['message']= subData,subBillItem
 
             
