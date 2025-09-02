@@ -45,6 +45,7 @@ body {
     margin-left: 0;
     transition: margin-left 0.3s;
     padding: 20px;
+    /* display: none; */
 }
 
 .content.active {
@@ -192,7 +193,7 @@ body {
 
     .bill {
       position:fixed;
-      background: #f4f6fb;
+      background: #f4f6fb00;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
@@ -200,10 +201,15 @@ body {
       justify-content: center;
       align-items: center;
       display:none;
+
+      left: 25%;
+      width: 50%;
+      
+
     }
 
     .bill-container {
-      width: 50%;
+      width: 90%;
       min-width: 320px;
       background: white;
       padding: 20px 30px;
@@ -304,3 +310,12 @@ body {
         width: 90%;
       }
     }
+
+
+.bill-info p{
+  color: black;
+}
+
+tr td{
+  color: black;
+}

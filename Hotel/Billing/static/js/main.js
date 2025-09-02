@@ -1,5 +1,41 @@
-function ShowBill(BillData)
+function renderBill(BillData)
 {
+    const content=document.querySelector('.content')
+    const Cashier_Name=document.querySelector('#Cashiername')
+    const Bill_no=document.querySelector('#Billno')
+    const Billinfo=document.querySelector('.BillInfo')
+    const Min_totals=document.querySelector('.totalss')
+    const ttl=document.querySelector('.ttl')
+    const Subtotals=document.querySelector('.Subtotals')
+    const billbox=document.querySelector('.bill')
+
+    Cashier_Name.innerHTML="vikash mehta"
+    Bill_no.innerHTML='1234'
+    Min_totals.innerHTML='₹3411'
+    ttl.innerHTML='₹2349.23'
+    Subtotals.innerHTML='₹148173.134'
+
+
+    content.style.display='none'
+    billbox.style.display='block'
+
+
+    console.log(BillData)
+    let tr = document.createElement('tr')
+    tr.innerHTML=   
+        `
+            <td id=""></td>
+            <td id="Itemname"></td>
+            <td id="Price"></td>
+            <td id="qtys"></td>
+            <td id="totalss"> ₹ </td>
+          
+          `
+
+          
+    Billinfo.appendChild(tr)
+    console.log(tr)
+    // console.log(Billinfo,tr)
 
 }
 
@@ -25,8 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else if (data['messageType'] == "SuccessMessage") {
                 console.log(data['message'])
-                // other operations
+                billDetails= data['message']
+                renderBill(billDetails)
             }
+            
             
         } catch (e) {
             console.error("Error parsing server data:", e, event.data);
@@ -95,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let qtyArray = []
         console.log('done')
         const payableAmountEl = document.getElementById("payableAmount");
-        if payableAmountEl.innerHTML > 0
+        if (payableAmountEl.innerHTML > 0)
         {   
             ids.forEach((id)=>{
                 idArray.push(id.value)
@@ -114,6 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
             
             console.log(billItems)
             ws.send(JSON.stringify(billItems))
+        }
+        else{
+            alert("Add items to cart first")
         }
     })
     

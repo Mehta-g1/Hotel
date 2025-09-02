@@ -29,8 +29,8 @@
       </div>
 
       <div class="bill-info">
-        <p><b>Customer:</b> Rishav Singh</p>
-        <p><b>Bill No:</b> #20250902</p>
+        <p><b>Cashier name :</b> <span id="Cashiername" ></span> </p>
+        <p><b>Bill No:</b> <span id="Billno"></span> </p>
       </div>
 
       <table>
@@ -43,36 +43,23 @@
             <th>Total</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Paneer Butter Masala</td>
-            <td>₹200</td>
-            <td>2</td>
-            <td>₹400</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Butter Naan</td>
-            <td>₹50</td>
-            <td>4</td>
-            <td>₹200</td>
-          </tr>
+        <tbody class="BillInfo">
+          
         </tbody>
       </table>
 
       <table class="totals">
         <tr>
           <td>Total</td>
-          <td>₹600</td>
+          <td class="totalss">₹600</td>
         </tr>
         <tr>
           <td>Tax (5%)</td>
-          <td>₹30</td>
+          <td class="ttl">₹30</td>
         </tr>
         <tr class="grand">
           <td>Payable</td>
-          <td>₹630</td>
+          <td class="Subtotals">₹630</td>
         </tr>
       </table>
 
@@ -81,6 +68,7 @@
       </div>
 
       <button class="print-btn" onclick="window.print()">🖨 Print Bill</button>
+      <button class="backbtn" > Cancel Print</button>
   </div>
 
   </div>

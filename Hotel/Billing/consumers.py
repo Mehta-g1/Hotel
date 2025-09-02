@@ -48,6 +48,8 @@ class MySyncConsumer(SyncConsumer):
                 'text':json.dumps(message)
             })
         else :
+            data={'messageType':'SuccessMessage'}
+            
             billData =json.loads(event['text'])
             self.send({
                 'type':'websocket.send',
@@ -60,19 +62,25 @@ class MySyncConsumer(SyncConsumer):
             try:
                 casher_id = 2
                 cashier = get_object_or_404(Cashier, pk=casher_id)
-                bill = Bill.objects.create(cashier_name = cashier, subtotal=0.0)
+                subData={'cashier':cashier.chashier_name}
+                bill = Bill.objects.create(cashier_name = cashier, subtotal=0.0, taxAmt=0.0)
+                subData['billNo']=bill.id
                 total_subtotal = 0.0
-                
+                taxAmount=0.0
                 bill_items_to_create = []
-
+                Submain= []
+                subBillItem = []
                 for e in range(len(billData)):
+                    
                     id = billData[e].get('id')
                     qty = billData[e].get('qty')
 
                     dish = get_object_or_404(Dishes, pk = id)
                     item_price = dish.price
                     item_total = int(qty) * int(item_price)
+
                     total_subtotal += int(item_total)
+                    
                     bill_items_to_create.append(
                         BillItem(
                             bill=bill,
@@ -81,14 +89,36 @@ class MySyncConsumer(SyncConsumer):
                             price=item_price
                         )
                     )
+                    subBillItem.append({'item': dish.dish_name, 'quantity':qty, 'price':item_price})
+                    Submain.append(subBillItem)
+                    subData['total']=total_subtotal
+
+                print(Submain)
                 BillItem.objects.bulk_create(bill_items_to_create)
-                bill.subtotal = total_subtotal + total_subtotal*(5/100)
+                
+                qty={''}
+                taxAmount= total_subtotal*(5/100)
+                bill.subtotal = total_subtotal + taxAmount
+                subData['subtotal']=total_subtotal
+                subData['taxAmount']=taxAmount
                 bill.save()
             except Exception as e:
                 print(e)
 
+            data['message']= subData,subBillItem
 
-            print(bill)
+            
+            self.send({
+                'type':'websocket.send',
+                'text':json.dumps(data)
+            })
+            print('Bill information sent successfully')
+            # print(bill)
+            # cashier_name=bill.cashier_name
+            # subtotal=bill.subtotal
+            # items=bill.items
+            # print(bill.dish_name)
+
 
     def websocket_disconnect(self, event):
         print("Websocket Disconnected ....",event)

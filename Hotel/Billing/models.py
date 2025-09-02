@@ -13,6 +13,7 @@ class Bill(models.Model):
 
     cashier_name = models.ForeignKey(Cashier, on_delete=models.SET_NULL, null=True, blank=True)
     subtotal = models.FloatField()
+    taxAmt=models.FloatField(null=True , blank=True)
     bill_date = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Dishes, through='BillItem')
 
