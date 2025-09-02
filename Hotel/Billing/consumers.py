@@ -5,8 +5,9 @@
 
 from channels.consumer import SyncConsumer, AsyncConsumer
 from channels.exceptions import StopConsumer
-from .models import Dishes
+from .models import Dishes, BillItem, Bill, Cashier
 import json
+from django.shortcuts import get_object_or_404
 from time import sleep
 import asyncio
 import json
@@ -24,24 +25,71 @@ class MySyncConsumer(SyncConsumer):
         if event['text'] == "send dishes":
             dishes = []
             for dish in Dishes.objects.all():
-                id = dish.id
-                name = dish.dish_name
-                description = dish.receipe
-                price = dish.price
-                category = dish.category.category_name
-                dishes.append({
-                    'id':id,
-                    'name':name,
-                    'description': description,
-                    'price':price,
-                    'category': category
-                })
+                if dish.is_available:
+                    id = dish.id
+                    name = dish.dish_name
+                    description = dish.receipe
+                    price = dish.price
+                    category = dish.category.category_name
+                    dishes.append({
+                        'id':id,
+                        'name':name,
+                        'description': description,
+                        'price':price,
+                        'category': category
+                    })
 
+            message = {
+                'messageType':"Dishes",
+                "message":dishes
+            }
             self.send({
                 'type':'websocket.send',
-                'text':json.dumps(dishes)
+                'text':json.dumps(message)
             })
-  
+
+        else :
+            billData =json.loads(event['text'])
+            self.send({
+                'type':'websocket.send',
+                'text':json.dumps({
+                    'messageType':"SuccessMessage",
+                    'message':"Bill Data received"
+                })
+            })
+            billData = billData[1::]
+            try:
+                casher_id = 2
+                cashier = get_object_or_404(Cashier, pk=casher_id)
+                bill = Bill.objects.create(cashier_name = cashier, subtotal=0.0)
+                total_subtotal = 0.0
+                
+                bill_items_to_create = []
+
+                for e in range(len(billData)):
+                    id = billData[e].get('id')
+                    qty = billData[e].get('qty')
+
+                    dish = get_object_or_404(Dishes, pk = id)
+                    item_price = dish.price
+                    item_total = int(qty) * int(item_price)
+                    total_subtotal += int(item_total)
+                    bill_items_to_create.append(
+                        BillItem(
+                            bill=bill,
+                            dish=dish,
+                            quantity=qty,
+                            price=item_price
+                        )
+                    )
+                BillItem.objects.bulk_create(bill_items_to_create)
+                bill.subtotal = total_subtotal + total_subtotal*(5/100)
+                bill.save()
+            except Exception as e:
+                print(e)
+
+
+            print(bill)
 
     def websocket_disconnect(self, event):
         print("Websocket Disconnected ....",event)

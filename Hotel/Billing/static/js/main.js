@@ -12,9 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
     ws.onmessage = function (event) {
         try {
             let data = JSON.parse(event.data);
-            console.log("Message Received from server ....", data);
-            dishes = data;
-            renderDishes();
+            if (data['messageType'] == "Dishes") {
+                console.log("Message Received from server ....", data);
+                dishes = data['message'];
+                renderDishes();
+            }
+            else if (data['messageType'] == "SuccessMessage") {
+                console.log(data['message'])
+                // other operations
+            }
+            
         } catch (e) {
             console.error("Error parsing server data:", e, event.data);
         }
@@ -71,6 +78,37 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCart();
     }
 
+    document.querySelector(".PayNow").addEventListener("click",(e)=>{
+        console.log("Hlooooo")
+        e.preventDefault()
+
+        const ids = document.querySelectorAll('.id')
+        const qtys = document.querySelectorAll('.qty1')
+        const billItems = []
+        let idArray = []
+        let qtyArray = []
+        console.log('done')
+
+        ids.forEach((id)=>{
+            idArray.push(id.value)
+        })
+        qtys.forEach((qty)=>{
+            qtyArray.push(qty.value)
+        })
+        billItems.push({dataType:"Bill Details"})
+        for(let i=0;i<idArray.length;i++) {
+            let data = {
+                id:idArray[i], 
+                qty : qtyArray[i]
+            }
+            billItems.push(data)
+        }
+        
+        console.log(billItems)
+        ws.send(JSON.stringify(billItems))
+    })
+
+
     function renderCart() {
         const cartTable = document.getElementById("cartTable");
         if(!cartTable) return;
@@ -99,10 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
               </tr>
             `;
             hiddenInputsHTML += `
-                <input type="hidden" name="id[${i}]" value="${item.id}">
-                <input type="hidden" name="item_name[${i}]" value="${item.name}">
-                <input type="hidden" name="item_qty[${i}]" value="${item.qty}">
+                <input class="id" type="hidden" name="id[${i}]" value="${item.id}">
+                <input  type="hidden" name="item_name[${i}]" value="${item.name}">
+                <input class="qty1" type="hidden" name="item_qty[${i}]" value="${item.qty}">
             `;
+            
         }
 
         let hiddenInputsContainer = document.getElementById('hidden-inputs-container');

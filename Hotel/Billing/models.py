@@ -10,21 +10,24 @@ class Cashier(models.Model):
         return self.chashier_name
 
 class Bill(models.Model):
+
     cashier_name = models.ForeignKey(Cashier, on_delete=models.SET_NULL, null=True, blank=True)
-    items = models.ManyToManyField(Dishes)
     subtotal = models.FloatField()
     bill_date = models.DateTimeField(auto_now_add=True)
     items = models.ManyToManyField(Dishes, through='BillItem')
 
     def __str__(self):
-        return f"{self.cashier_name} -{self.id}"
+        return f" {self.id}  Cashier :{self.cashier_name.chashier_name}  Total:{self.subtotal}"
 
 class BillItem(models.Model):
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
     dish = models.ForeignKey(Dishes, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.FloatField()  # optional: save price at time of billing
+    price = models.FloatField() 
 
     def get_total(self):
         return self.quantity * self.price
+    
+    def __str__(self):
+        return f"{self.dish.dish_name}  -Quantity: {self.quantity}"
 

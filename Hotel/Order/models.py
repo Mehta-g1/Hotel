@@ -11,7 +11,6 @@ class Categories(models.Model):
 
 class Dishes(models.Model):
     ch = [("SG", "Signature"), ("SP", "Spicy"), ("SP", "Special")]
-    
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     dish_name = models.CharField(max_length=150)
     receipe = models.TextField(blank=True, null=True)
