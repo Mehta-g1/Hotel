@@ -1,3 +1,9 @@
+function ShowBill(BillData)
+{
+
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
 
@@ -81,33 +87,36 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".PayNow").addEventListener("click",(e)=>{
         console.log("Hlooooo")
         e.preventDefault()
-
+        
         const ids = document.querySelectorAll('.id')
         const qtys = document.querySelectorAll('.qty1')
         const billItems = []
         let idArray = []
         let qtyArray = []
         console.log('done')
-
-        ids.forEach((id)=>{
-            idArray.push(id.value)
-        })
-        qtys.forEach((qty)=>{
-            qtyArray.push(qty.value)
-        })
-        billItems.push({dataType:"Bill Details"})
-        for(let i=0;i<idArray.length;i++) {
-            let data = {
-                id:idArray[i], 
-                qty : qtyArray[i]
+        const payableAmountEl = document.getElementById("payableAmount");
+        if payableAmountEl.innerHTML > 0
+        {   
+            ids.forEach((id)=>{
+                idArray.push(id.value)
+            })
+            qtys.forEach((qty)=>{
+                qtyArray.push(qty.value)
+            })
+            billItems.push({dataType:"Bill Details"})
+            for(let i=0;i<idArray.length;i++) {
+                let data = {
+                    id:idArray[i], 
+                    qty : qtyArray[i]
+                }
+                billItems.push(data)
             }
-            billItems.push(data)
+            
+            console.log(billItems)
+            ws.send(JSON.stringify(billItems))
         }
-        
-        console.log(billItems)
-        ws.send(JSON.stringify(billItems))
     })
-
+    
 
     function renderCart() {
         const cartTable = document.getElementById("cartTable");
@@ -290,3 +299,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
+

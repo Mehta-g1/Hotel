@@ -188,3 +188,119 @@ body {
 .invisible {
     display: none;
 }
+
+
+    .bill {
+      position:fixed;
+      background: #f4f6fb;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display:none;
+    }
+
+    .bill-container {
+      width: 50%;
+      min-width: 320px;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        
+
+    }
+
+    .bill-header {
+      text-align: center;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .bill-header h2 {
+      margin: 0;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .bill-header small {
+      color: #555;
+    }
+
+    .bill-info {
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .bill-info p {
+      margin: 3px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    table th,
+    table td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    table th {
+      background: #2b8cff;
+      color: white;
+    }
+
+    .totals {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .totals td {
+      padding: 6px;
+      text-align: right;
+    }
+
+    .totals td:first-child {
+      text-align: left;
+    }
+
+    .totals .grand {
+      font-weight: bold;
+      border-top: 2px solid #000;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .print-btn {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      border: none;
+      background: #2b8cff;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background: #1767c2;
+    }
+
+    @media (max-width: 768px) {
+      .bill-container {
+        width: 90%;
+      }
+    }

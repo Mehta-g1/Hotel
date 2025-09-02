@@ -47,7 +47,6 @@ class MySyncConsumer(SyncConsumer):
                 'type':'websocket.send',
                 'text':json.dumps(message)
             })
-
         else :
             billData =json.loads(event['text'])
             self.send({
