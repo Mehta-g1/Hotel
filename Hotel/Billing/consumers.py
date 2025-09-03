@@ -114,12 +114,6 @@ class MySyncConsumer(SyncConsumer):
                 'text':json.dumps(data)
             })
             print('Bill information sent successfully')
-            # print(bill)
-            # cashier_name=bill.cashier_name
-            # subtotal=bill.subtotal
-            # items=bill.items
-            # print(bill.dish_name)
-
 
     def websocket_disconnect(self, event):
         print("Websocket Disconnected ....",event)

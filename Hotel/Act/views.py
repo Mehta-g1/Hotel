@@ -7,3 +7,8 @@ def About(request):
 
 def Contact(request):
     return HttpResponse("<h1>Contact Page </h1>")
+
+
+
+def Home(request):
+    return render(request, 'index.html')
