@@ -1,44 +1,48 @@
-function renderBill(BillData)
-{
-    const content=document.querySelector('.content')
-    const Cashier_Name=document.querySelector('#Cashiername')
-    const Bill_no=document.querySelector('#Billno')
-    const Billinfo=document.querySelector('.BillInfo')
-    const Min_totals=document.querySelector('.totalss')
-    const ttl=document.querySelector('.ttl')
-    const Subtotals=document.querySelector('.Subtotals')
-    const billbox=document.querySelector('.bill')
+function renderBill(BillData) {
+    console.log("renderBill called");  // check ke liye
+    const content = document.querySelector('.content');
+    const billbox = document.querySelector('.bill');
+    const Billinfo = document.querySelector('.BillInfo');
 
-    Cashier_Name.innerHTML="vikash mehta"
-    Bill_no.innerHTML='1234'
-    Min_totals.innerHTML='₹3411'
-    ttl.innerHTML='₹2349.23'
-    Subtotals.innerHTML='₹148173.134'
+    let billDetails = BillData[0];
+    let items = BillData[1];
 
+    document.querySelector('#Cashiername').innerHTML = billDetails.cashier;
+    document.querySelector('#Billno').innerHTML = billDetails.billNo;
+    document.querySelector('.Subtotals').innerHTML = "₹" + billDetails.subtotal;
+    document.querySelector('.totalss').innerHTML = "₹" + billDetails.taxAmount;
+    document.querySelector('.ttl').innerHTML = "₹" + billDetails.total;
 
-    content.style.display='none'
-    billbox.style.display='block'
+    content.style.display = 'none';
+    billbox.style.display = 'block';
+    console.log('hii');
 
+    Billinfo.innerHTML = "";
 
-    console.log(BillData)
-    let tr = document.createElement('tr')
-    tr.innerHTML=   
-        `
-            <td id=""></td>
-            <td id="Itemname"></td>
-            <td id="Price"></td>
-            <td id="qtys"></td>
-            <td id="totalss"> ₹ </td>
-          
-          `
-
-          
-    Billinfo.appendChild(tr)
-    console.log(tr)
-    // console.log(Billinfo,tr)
-
+    items.forEach((item, index) => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.item}</td>
+            <td>₹${item.price}</td>
+            <td>${item.quantity}</td>
+            <td>₹${item.price * item.quantity}</td>
+        `;
+        Billinfo.appendChild(tr);
+    });
 }
 
+
+
+document.querySelector('.backbtn').addEventListener('click', (e) => {
+    e.preventDefault()
+
+    const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
+    ws.onopen = function () {
+        console.log("WebSocket Connection Open ...");
+        ws.send("send dishes");
+    }
+})
 
 document.addEventListener("DOMContentLoaded", () => {
     const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
@@ -54,30 +58,29 @@ document.addEventListener("DOMContentLoaded", () => {
     ws.onmessage = function (event) {
         try {
             let data = JSON.parse(event.data);
-            if (data['messageType'] == "Dishes") {
+            if (data.messageType == "Dishes") {
                 console.log("Message Received from server ....", data);
                 dishes = data['message'];
                 renderDishes();
             }
-            else if (data['messageType'] == "SuccessMessage") {
-                console.log(data['message'])
-                billDetails= data['message']
-                renderBill(billDetails)
+            else if (data.messageType == "SuccessMessage") {
+                console.log("Bill data received:", data.message);
+                renderBill(data.message);   // Yaha call karna hai
             }
-            
-            
+
+
         } catch (e) {
             console.error("Error parsing server data:", e, event.data);
         }
     }
 
-    ws.onerror = function (event) {
-        console.log("WebSocket Error Occurred ....", event);
-    }
+    ws.onerror = function (err) {
+        console.error("❌ WebSocket error:", err);
+    };
 
-    ws.onclose = function (event) {
-        console.log("WebSocket connection closed ...", event);
-    }
+    ws.onclose = function () {
+        console.warn("⚠️ WebSocket closed");
+    };
 
     function renderDishes(dishesToRender = dishes) {
         const container = document.getElementById("dishContainer");
@@ -104,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    window.addToCart = function(id) {
+    window.addToCart = function (id) {
         const dish = dishes.find(d => d.id === id);
         if (!cart[id]) {
             cart[id] = { ...dish, qty: 1 };
@@ -114,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCart();
     }
 
-    window.removeFromCart = function(id) {
+    window.removeFromCart = function (id) {
         if (cart[id]) {
             cart[id].qty--;
             if (cart[id].qty <= 0) delete cart[id];
@@ -122,10 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCart();
     }
 
-    document.querySelector(".PayNow").addEventListener("click",(e)=>{
+    document.querySelector(".PayNow").addEventListener("click", (e) => {
         console.log("Hlooooo")
         e.preventDefault()
-        
+
         const ids = document.querySelectorAll('.id')
         const qtys = document.querySelectorAll('.qty1')
         const billItems = []
@@ -133,35 +136,34 @@ document.addEventListener("DOMContentLoaded", () => {
         let qtyArray = []
         console.log('done')
         const payableAmountEl = document.getElementById("payableAmount");
-        if (payableAmountEl.innerHTML > 0)
-        {   
-            ids.forEach((id)=>{
+        if (payableAmountEl.innerHTML > 0) {
+            ids.forEach((id) => {
                 idArray.push(id.value)
             })
-            qtys.forEach((qty)=>{
+            qtys.forEach((qty) => {
                 qtyArray.push(qty.value)
             })
-            billItems.push({dataType:"Bill Details"})
-            for(let i=0;i<idArray.length;i++) {
+            billItems.push({ dataType: "Bill Details" })
+            for (let i = 0; i < idArray.length; i++) {
                 let data = {
-                    id:idArray[i], 
-                    qty : qtyArray[i]
+                    id: idArray[i],
+                    qty: qtyArray[i]
                 }
                 billItems.push(data)
             }
-            
+
             console.log(billItems)
             ws.send(JSON.stringify(billItems))
         }
-        else{
+        else {
             alert("Add items to cart first")
         }
     })
-    
+
 
     function renderCart() {
         const cartTable = document.getElementById("cartTable");
-        if(!cartTable) return;
+        if (!cartTable) return;
         cartTable.innerHTML = "";
         let total = 0;
         let i = 0;
@@ -191,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <input  type="hidden" name="item_name[${i}]" value="${item.name}">
                 <input class="qty1" type="hidden" name="item_qty[${i}]" value="${item.qty}">
             `;
-            
+
         }
 
         let hiddenInputsContainer = document.getElementById('hidden-inputs-container');
@@ -199,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
             hiddenInputsContainer = document.createElement('div');
             hiddenInputsContainer.id = 'hidden-inputs-container';
             const form = document.querySelector('form');
-            if(form) form.appendChild(hiddenInputsContainer);
+            if (form) form.appendChild(hiddenInputsContainer);
         }
         hiddenInputsContainer.innerHTML = hiddenInputsHTML;
 
@@ -219,23 +221,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const taxAmountEl = document.getElementById("taxAmount");
         const payableAmountEl = document.getElementById("payableAmount");
 
-        if(totalAmountEl) totalAmountEl.innerHTML = TotalAmount;
-        if(taxAmountEl) taxAmountEl.innerHTML = TaxAmount;
-        if(payableAmountEl) payableAmountEl.innerHTML = PayableAmount;
+        if (totalAmountEl) totalAmountEl.innerHTML = TotalAmount;
+        if (taxAmountEl) taxAmountEl.innerHTML = TaxAmount;
+        if (payableAmountEl) payableAmountEl.innerHTML = PayableAmount;
     }
 
     const billDateEl = document.getElementById("billDate");
-    if(billDateEl) billDateEl.innerText = "Date: " + new Date().toLocaleString();
+    if (billDateEl) billDateEl.innerText = "Date: " + new Date().toLocaleString();
 
     renderDishes();
 
     const searchBox = document.getElementById("searchBox");
-    if(searchBox) searchBox.focus();
-    
+    if (searchBox) searchBox.focus();
+
     const suggestionsBox = document.getElementById("suggestions");
     let currentIndex = -1;
 
-    if(searchBox && suggestionsBox){
+    if (searchBox && suggestionsBox) {
         searchBox.addEventListener("input", function () {
             const query = this.value.toLowerCase().trim();
             suggestionsBox.innerHTML = "";
@@ -323,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     document.head.appendChild(style);
 
-    document.addEventListener("click", function(event) {
+    document.addEventListener("click", function (event) {
         if (suggestionsBox && searchBox && !searchBox.contains(event.target)) {
             suggestionsBox.style.display = "none";
         }
@@ -333,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById("sidebar");
     const content = document.getElementById("content");
 
-    if(menuBtn && sidebar && content){
+    if (menuBtn && sidebar && content) {
         menuBtn.onclick = function () {
             sidebar.classList.toggle("active");
             content.classList.toggle("active");
