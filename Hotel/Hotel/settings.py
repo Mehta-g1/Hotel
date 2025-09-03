@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-mik$5@4&f($tmuf@2q_-ip+3@uesdtu9-$1t_jg6)rs)ak6zkk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -60,7 +60,7 @@ ROOT_URLCONF = "Hotel.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ['templates'],
+        "DIRS": [os.path.join(BASE_DIR,'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -127,3 +127,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

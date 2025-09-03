@@ -19,7 +19,7 @@ def Home(request):
             dish = {'id':id,'name':name +" -"+category,'description':description,'price':price, 'category':category }
             dishes.append(dish)
 
-    return render(request, 'order.html',{'cashier':cashier,'dishes':dishes})
+    return render(request, 'billing/order.html',{'cashier':cashier,'dishes':dishes})
 
 def Reports(request):
     return HttpResponse("Daily Reports")
