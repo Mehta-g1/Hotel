@@ -91,14 +91,20 @@ class MySyncConsumer(SyncConsumer):
                     )
                     subBillItem.append({'item': dish.dish_name, 'quantity':qty, 'price':item_price})
                     Submain.append(subBillItem)
-                    subData['total']=total_subtotal
 
-                print(Submain)
+                subData['total']=total_subtotal
+                # print(total_subtotal)
                 BillItem.objects.bulk_create(bill_items_to_create)
                 
-                qty={''}
-                taxAmount= total_subtotal*(5/100)
-                bill.subtotal = total_subtotal + taxAmount
+                
+                taxAmount= float(total_subtotal*(5/100))
+
+                bill.taxAmt=taxAmount
+                total_subtotal = int(total_subtotal) + float(taxAmount)
+                bill.subtotal =  total_subtotal
+
+                # print(total_subtotal, taxAmount)
+                
                 subData['subtotal']=total_subtotal
                 subData['taxAmount']=taxAmount
                 bill.save()

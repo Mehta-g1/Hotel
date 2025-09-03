@@ -10,8 +10,8 @@ function renderBill(BillData) {
     document.querySelector('#Cashiername').innerHTML = billDetails.cashier;
     document.querySelector('#Billno').innerHTML = billDetails.billNo;
     document.querySelector('.Subtotals').innerHTML = "₹" + billDetails.subtotal;
-    document.querySelector('.totalss').innerHTML = "₹" + billDetails.taxAmount;
-    document.querySelector('.ttl').innerHTML = "₹" + billDetails.total;
+    document.querySelector('.totalss').innerHTML = "₹" + billDetails.total;
+    document.querySelector('.ttl').innerHTML = "₹" + billDetails.taxAmount;
 
     content.style.display = 'none';
     billbox.style.display = 'block';
