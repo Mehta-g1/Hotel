@@ -34,15 +34,46 @@ function renderBill(BillData) {
 
 
 
-document.querySelector('.backbtn').addEventListener('click', (e) => {
-    e.preventDefault()
+// Back function
+function goBack() {
+    const content = document.querySelector('.content');
+    const billbox = document.querySelector('.bill');
+    const Billinfo = document.querySelector('.BillInfo');
 
-    const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
-    ws.onopen = function () {
-        console.log("WebSocket Connection Open ...");
-        ws.send("send dishes");
-    }
-})
+    // Bill screen hide, content show
+    billbox.style.display = 'none';
+    content.style.display = 'block';
+
+    // Bill table clear
+    if (Billinfo) Billinfo.innerHTML = "";
+    const cartTable = document.getElementById("cartTable");
+    cartTable.innerHTML = `<tr><td colspan="5" class="text-muted p-3">No items added yet.</td></tr>`;
+
+
+    // Cart reset
+    cart = {};
+    renderCart();
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") { 
+              // "Escape" key press
+              console.log("")
+            goBack();
+        }
+    });
+}
+
+// Cancel/Back button event listener
+document.querySelector('.backbtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    goBack();
+
+    // document.querySelector(".BillInfo").innerHTML = ''
+
+});
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const ws = new WebSocket('ws://127.0.0.1:8000/ws/sc/');
@@ -227,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const billDateEl = document.getElementById("billDate");
-    if (billDateEl) billDateEl.innerText = "Date: " + new Date().toLocaleString();
+    if (billDateEl) billDateEl.innerText = new Date().toLocaleString();
 
     renderDishes();
 

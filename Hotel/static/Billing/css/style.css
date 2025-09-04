@@ -328,3 +328,15 @@ table th {
 tr td {
   color: black;
 }
+
+
+.backbtn
+{
+  background-color: rgba(255, 0, 0, 0.639);
+}
+
+.backbtn:hover
+{
+  border: 1px solid rgba(255, 0, 0, 0.975);
+  background-color: #1767c292;
+}
