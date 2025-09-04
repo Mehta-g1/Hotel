@@ -1,0 +1,128 @@
+{% extends "billing/base1.html" %}
+
+
+{% load static %}
+
+{% block title %} {{title}} {% endblock %}
+
+
+{% block content %}
+
+
+
+
+
+
+
+
+  <header>🍴 Welcome to Food Paradise</header>
+
+  <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🍽 Hotel Admin</h4>
+        <a href="#">🏠 Dashboard</a>
+        <a href="#">📋 Orders</a>
+        <a href="#">🍕 Dishes</a>
+        <a href="#">👥 Customers</a>
+        <a href="#">💳 Billing</a>
+        <a href="#">📦 Inventory</a>
+        <a href="#">📊 Reports</a>
+        <a href="#">⚙ Settings</a>
+        <a href="#">❓ Help</a>
+        <a href="#">🚪 Logout</a>
+    </div>
+
+    
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search your favorite food...">
+    <button onclick="searchFood()">🔍 Search</button>
+  </div>
+
+      
+  <!-- Main Content -->
+  <div id="main-content">
+    <div class="row">
+      <div class="category" onclick="openDetail('pavbhajiPage')">
+        <h3>🥘 Pav Bhaji</h3>
+      </div>
+      <div class="category" onclick="openDetail('maggiePage')">
+        <h3>🍜 Maggie</h3>
+      </div>
+      <div class="category" onclick="openDetail('pizzaPage')">
+        <h3>🍕 Pizza</h3>
+      </div>
+    </div>
+
+    <div class="image-row">
+      <div class="food-card">
+        <img src="https://source.unsplash.com/400x300/?pavbhaji" alt="Pav Bhaji">
+        <h4>Pav Bhaji</h4>
+      </div>
+      <div class="food-card">
+        <img src="https://source.unsplash.com/400x300/?maggie" alt="Maggie">
+        <h4>Maggie</h4>
+      </div>
+      <div class="food-card">
+        <img src="https://source.unsplash.com/400x300/?pizza" alt="Pizza">
+        <h4>Pizza</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================== Pav Bhaji ================== -->
+  <div id="pavbhajiPage" class="detail-page">
+    <h2>🥘 Pav Bhaji Varieties</h2>
+    <ul>
+      <li onclick="openDetail('cheesePavPage')">Cheese Pav Bhaji</li>
+      <li onclick="openDetail('masalaPavPage')">Masala Pav</li>
+      <li onclick="openDetail('butterPavPage')">Butter Pav Bhaji</li>
+      <li onclick="openDetail('paneerPavPage')">Paneer Pav Bhaji</li>
+      <li onclick="openDetail('jainPavPage')">Jain Pav Bhaji</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+  </div>
+  <div id="cheesePavPage" class="detail-page"><h2>🧀 Cheese Pav Bhaji</h2><p>Loaded with extra cheese.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="masalaPavPage" class="detail-page"><h2>🌶 Masala Pav</h2><p>Spicy and buttery pav stuffed with bhaji masala.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="butterPavPage" class="detail-page"><h2>🧈 Butter Pav Bhaji</h2><p>Rich pav bhaji topped with lots of butter.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="paneerPavPage" class="detail-page"><h2>🥗 Paneer Pav Bhaji</h2><p>Bhaji with paneer chunks for extra flavor.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="jainPavPage" class="detail-page"><h2>🙏 Jain Pav Bhaji</h2><p>No onion, no garlic version.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+
+  <!-- ================== Maggie ================== -->
+  <div id="maggiePage" class="detail-page">
+    <h2>🍜 Maggie Varieties</h2>
+    <ul>
+      <li onclick="openDetail('masalaMaggiePage')">Masala Maggie</li>
+      <li onclick="openDetail('cheeseMaggiePage')">Cheese Maggie</li>
+      <li onclick="openDetail('vegMaggiePage')">Veg Maggie</li>
+      <li onclick="openDetail('butterMaggiePage')">Butter Tadka Maggie</li>
+      <li onclick="openDetail('paneerMaggiePage')">Paneer Maggie</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+  </div>
+  <div id="masalaMaggiePage" class="detail-page"><h2>🌶 Masala Maggie</h2><p>Classic masala maggie with spicy flavor.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="cheeseMaggiePage" class="detail-page"><h2>🧀 Cheese Maggie</h2><p>Cheesy maggie loved by kids.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="vegMaggiePage" class="detail-page"><h2>🥦 Veg Maggie</h2><p>Maggie loaded with vegetables.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="butterMaggiePage" class="detail-page"><h2>🧈 Butter Tadka Maggie</h2><p>Maggie cooked in butter tadka.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="paneerMaggiePage" class="detail-page"><h2>🥗 Paneer Maggie</h2><p>Maggie with paneer cubes for extra protein.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+
+  <!-- ================== Pizza ================== -->
+  <div id="pizzaPage" class="detail-page">
+    <h2>🍕 Pizza Varieties</h2>
+    <ul>
+      <li onclick="openDetail('margheritaPage')">Margherita Pizza</li>
+      <li onclick="openDetail('cheeseBurstPage')">Cheese Burst Pizza</li>
+      <li onclick="openDetail('paneerPizzaPage')">Paneer Tikka Pizza</li>
+      <li onclick="openDetail('veggiePizzaPage')">Veggie Delight Pizza</li>
+      <li onclick="openDetail('farmhousePage')">Farmhouse Special Pizza</li>
+    </ul>
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+  </div>
+  <div id="margheritaPage" class="detail-page"><h2>🍕 Margherita Pizza</h2><p>Classic cheese and tomato pizza.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="cheeseBurstPage" class="detail-page"><h2>🧀 Cheese Burst Pizza</h2><p>Cheese filled crust for ultimate experience.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="paneerPizzaPage" class="detail-page"><h2>🥗 Paneer Tikka Pizza</h2><p>Pizza topped with paneer tikka chunks.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="veggiePizzaPage" class="detail-page"><h2>🥦 Veggie Delight Pizza</h2><p>Loaded with fresh vegetables.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+  <div id="farmhousePage" class="detail-page"><h2>🌾 Farmhouse Special Pizza</h2><p>All-in-one pizza with cheese and veggies.</p><button class="back-btn" onclick="goBack()">⬅ Back</button></div>
+
+
+
+{% endblock %}

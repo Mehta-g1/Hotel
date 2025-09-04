@@ -38,8 +38,16 @@ def checkout(request):
                 
             else:
                 break
-    return render(request, 'order.html',{'GenerateBill':True})
+    return render(request, 'billing/order.html',{'GenerateBill':True})
 
 
 
+def dishes(request):
+    dishes = Dishes.objects.all()
 
+    # for dish in dishes:
+    #     print(dish.dish_name)
+    #     print(dish.price)
+    #     print('--------------')
+
+    return render(request, 'billing/dish.html', {'title':'Dish manager'})
