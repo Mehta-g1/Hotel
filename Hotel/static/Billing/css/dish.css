@@ -5,22 +5,78 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Sidebar */
+/* .sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #1e293b;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    
 
-/* Sidebar Styles */
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  background: #343a40;
-  color: white;
-  position: fixed;
-  left: -250px;
-  /* Hidden by default */
-  top: 0;
-  transition: all 0.3s;
-  padding-top: 20px;
-  z-index: 1000;
-border-radius: 5px;
+    transition: 0.3s;
+    padding-top: 20px;
+    z-index: 1000;
 }
+
+.sidebar.active {
+    left: 0;
+    
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sidebar ul li:hover {
+    background: #334155;
+}
+
+.sidebar ul li i {
+    width: 20px;
+    text-align: center;
+}
+
+.logout {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+
+.toggle-btn {
+    font-size: 26px;
+    cursor: pointer;
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    border-radius: 5px;
+} */
+
+
 
 header {
     text-align: center;

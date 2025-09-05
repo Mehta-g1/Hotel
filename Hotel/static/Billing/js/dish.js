@@ -28,22 +28,8 @@
 //     }
 // }
 
-setupEventListeners() {
-    // Set bill date
-    const billDateEl = document.getElementById("billDate");
-    if (billDateEl) {
-        billDateEl.innerText = new Date().toLocaleString();
-    }
 
-    // Setup sidebar toggle
-    const menuBtn = document.getElementById("menu-btn");
-    const sidebar = document.getElementById("sidebar");
-    const content = document.getElementById("content");
 
-    if (menuBtn && sidebar && content) {
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle("active");
-            content.classList.toggle("active");
-        });
-    }
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
 }
