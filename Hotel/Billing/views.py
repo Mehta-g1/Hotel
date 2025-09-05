@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.http import HttpResponse
 from Order.models import *
-
+from django.db.models import Q
 
 def Home(request):
     cashier = Cashier.objects.all()[0].chashier_name
@@ -43,11 +43,38 @@ def checkout(request):
 
 
 def dishes(request):
+
     dishes = Dishes.objects.all()
+    if request.method == "POST":
+        if request.POST.get("search"):
+            search = request.POST.get("search")
+            dishes = Dishes.objects.filter(
+                Q(dish_name__icontains=search) | Q(category__icontains=search | Q(id__icontains=search))
+            )
+            return redirect('/dishes/')
+        
+        elif request.POST.get("category"):
+            category = request.POST.get("category")
+            dishes = Dishes.objects.filter(category__category_name__icontains=category)
+            return redirect('/dishes/')
+        elif request.POST.get("Available"):
+            dishes = Dishes.objects.filter(is_available=True)
+            return redirect('/dishes/')
+        elif request.POST.get("Unavailable"):
+            dishes = Dishes.objects.filter(is_available=False)
+            return redirect('/dishes/')
 
-    # for dish in dishes:
-    #     print(dish.dish_name)
-    #     print(dish.price)
-    #     print('--------------')
+        
+    dish_list = []
+    for dish in dishes:
 
-    return render(request, 'billing/dish.html', {'title':'Dish manager'})
+        name = dish.dish_name
+        price = dish.price
+        receipe = dish.receipe
+        category = dish.category.category_name
+        is_available = dish.is_available
+        dish_list.append({'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
+
+    length = len(dish_list)
+
+    return render(request, 'billing/dish.html', {'title':'Dish manager', 'dishes':dish_list, 'length':length})
