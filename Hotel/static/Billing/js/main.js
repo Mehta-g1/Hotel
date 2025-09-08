@@ -19,7 +19,7 @@ class WebSocketManager {
         this.ws.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
-                
+
                 if (data.messageType === "Dishes") {
                     console.log("Dishes received:", data);
                     this.dishes = data.message;
@@ -123,7 +123,7 @@ class CartManager {
 
     prepareBillData() {
         const billItems = [{ dataType: "Bill Details" }];
-        
+
         for (let key in this.cart) {
             const item = this.cart[key];
             billItems.push({
@@ -237,7 +237,7 @@ class DishesManager {
             const suggestionItem = document.createElement("a");
             suggestionItem.classList.add("list-group-item", "list-group-item-action");
             suggestionItem.textContent = `${dish.name} (${dish.category || 'N/A'}) - ₹${dish.price}`;
-            
+
             suggestionItem.addEventListener('click', () => {
                 this.cartManager.addItem(dish);
                 document.getElementById("searchBox").value = "";
@@ -298,7 +298,7 @@ class BillManager {
 
     render(billData) {
         console.log("Rendering bill");
-        
+
         const billBox = document.querySelector('.bill');
         const billInfo = document.querySelector('.BillInfo');
         const content = document.querySelector('.content');
@@ -358,13 +358,13 @@ class BillManager {
             e.preventDefault();
             this.goBack();
         }
-        
+
     }
 
     goBack() {
         const content = document.querySelector('.content');
         const billBox = document.querySelector('.bill');
-        
+
         billBox.classList.remove('bill-visible');
         content.style.display = 'block';
         this.isVisible = false;
@@ -428,11 +428,11 @@ class UIManager {
             // Add event listeners to buttons
             const removeBtn = row.querySelector('.remove-btn');
             const addBtn = row.querySelector('.add-btn');
-            
+
             removeBtn.addEventListener('click', () => {
                 this.cartManager.removeItem(item.id);
             });
-            
+
             addBtn.addEventListener('click', () => {
                 this.cartManager.addItem(item);
             });
@@ -503,15 +503,17 @@ class UIManager {
         }
 
         // Setup F2 keyboard shortcut for quick payment
-        document.addEventListener("keydown", (e) => {
+        document.addEventListener("keydown", function (e) {
             if (e.key === 'F2') {
                 e.preventDefault();
                 const payNowBtn = document.getElementById('payNowBtn');
-                if (payNowBtn && !this.cartManager.isEmpty()) {
+                if (this.cartManager.isEmpty()) {
+                    alert("Add items to cart first");
+                } else if (payNowBtn && !this.cartManager.isEmpty()) {
                     payNowBtn.click();
                 }
             }
-        });
+        }.bind(this));
     }
 
     setupStyles() {

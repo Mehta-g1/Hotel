@@ -24,6 +24,7 @@ def Home(request):
 def Reports(request):
     return HttpResponse("Daily Reports")
 
+
 def checkout(request):
     if request.method == "POST":
         billData=[]
@@ -39,7 +40,6 @@ def checkout(request):
             else:
                 break
     return render(request, 'billing/order.html',{'GenerateBill':True})
-
 
 
 def dishes(request):
@@ -67,14 +67,15 @@ def dishes(request):
         
     dish_list = []
     for dish in dishes:
-
+        id = dish.id
         name = dish.dish_name
         price = dish.price
         receipe = dish.receipe
         category = dish.category.category_name
         is_available = dish.is_available
-        dish_list.append({'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
+        dish_list.append({'id':id,'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
 
     length = len(dish_list)
 
     return render(request, 'billing/dish.html', {'title':'Dish manager', 'dishes':dish_list, 'length':length})
+
