@@ -69,11 +69,12 @@ def dishes(request):
     for dish in dishes:
         id = dish.id
         name = dish.dish_name
+        image = dish.dish_image
         price = dish.price
         receipe = dish.receipe
         category = dish.category.category_name
         is_available = dish.is_available
-        dish_list.append({'id':id,'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
+        dish_list.append({'id':id,'image':image,'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
 
     length = len(dish_list)
 
