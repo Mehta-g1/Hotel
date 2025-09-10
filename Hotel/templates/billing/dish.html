@@ -79,8 +79,16 @@
         <div class="dishes-grid" id="dishesGrid">
           {% for dish in dishes %}
           <div class="dish-card">
-            <img src="Images/{{dish.image.url}}" alt="Butter Chicken"
-              class="dish-image" loading="lazy">
+            {% comment %} <img src="{{ dish.image.url }}" alt="{{ dish.name }}" class="dish-image" loading="lazy"> {% endcomment %}
+
+            {% if dish.image %}
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" class="dish-image" loading="lazy">
+            {% else %}
+                <img src="{% static 'Images/default.png' %}" alt="No Image" class="dish-image" loading="lazy">
+            {% endif %}
+
+
+
             <div class="dish-info">
               <div class="dish-header">
                 <h3 class="dish-name">{{dish.name}}</h3>

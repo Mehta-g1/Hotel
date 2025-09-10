@@ -70,12 +70,13 @@ def dishes(request):
         id = dish.id
         name = dish.dish_name
         image = dish.dish_image
+        print(image)
         price = dish.price
         receipe = dish.receipe
         category = dish.category.category_name
         is_available = dish.is_available
-        dish_list.append({'id':id,'image':image,'name':name,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
-
+        dish_list.append({'id':id,'name':name,'image':image,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
+    # print(dish_list)
     length = len(dish_list)
 
     return render(request, 'billing/dish.html', {'title':'Dish manager', 'dishes':dish_list, 'length':length})
