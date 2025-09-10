@@ -45,6 +45,11 @@ def checkout(request):
 def dishes(request):
 
     dishes = Dishes.objects.all()
+    Category = Categories.objects.all()
+    ct = ["All"]
+    for c in Category:
+        ct.append(c.category_name)
+
     if request.method == "POST":
         if request.POST.get("search"):
             search = request.POST.get("search")
@@ -70,7 +75,6 @@ def dishes(request):
         id = dish.id
         name = dish.dish_name
         image = dish.dish_image
-        print(image)
         price = dish.price
         receipe = dish.receipe
         category = dish.category.category_name
@@ -78,6 +82,8 @@ def dishes(request):
         dish_list.append({'id':id,'name':name,'image':image,'price':price,'category':category,'is_available':is_available, 'receipe':receipe})
     # print(dish_list)
     length = len(dish_list)
-
-    return render(request, 'billing/dish.html', {'title':'Dish manager', 'dishes':dish_list, 'length':length})
+    
+    data = {'categories':ct, 'dishes':dish_list}
+                                                            
+    return render(request, 'billing/dish.html', {'title':'Dish manager', 'data':data, 'length':length})
 
