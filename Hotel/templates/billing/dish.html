@@ -44,25 +44,26 @@
 
     <div class="content">
       <div class="filters-section">
-        <form class="filter-form" method="GET">
+        <form class="filter-form" method="POST" action="/billing/dishes/">
+          {% csrf_token %}
           <div class="filter-group">
             <label for="categoryFilter">Category:</label>
             <select id="categoryFilter" name="category">
               {% for ct in  data.categories %}
-              <option value="">{{ct}}</option>
+              <option value="{{ct.id}}">{{ct.category}}</option>
               {% endfor %}
             </select>
           </div>
 
 
-          <div class="filter-group">
+          {% comment %} <div class="filter-group">
             <label for="availabilityFilter">Availability:</label>
             <select id="availabilityFilter" name="availability">
               <option value="">All</option>
               <option value="available">Available</option>
               <option value="unavailable">Unavailable</option>
             </select>
-          </div>
+          </div> {% endcomment %}
 
           <button type="submit" class="filter-btn">Apply Filters</button>
         </form>

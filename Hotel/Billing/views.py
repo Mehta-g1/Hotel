@@ -46,11 +46,13 @@ def dishes(request):
 
     dishes = Dishes.objects.all()
     Category = Categories.objects.all()
-    ct = ["All"]
+    ct = [{'category':'ALL','id':0}]
     for c in Category:
-        ct.append(c.category_name)
+        ct.append({'category':c.category_name,'id':c.id})
 
     if request.method == "POST":
+        print("\n\n\nFilter button pressed\n\n\n")
+        
         if request.POST.get("search"):
             search = request.POST.get("search")
             dishes = Dishes.objects.filter(
@@ -59,15 +61,19 @@ def dishes(request):
             return redirect('/dishes/')
         
         elif request.POST.get("category"):
+            # print("Hello")
+            print(request.POST.get('category'))
             category = request.POST.get("category")
-            dishes = Dishes.objects.filter(category__category_name__icontains=category)
-            return redirect('/dishes/')
-        elif request.POST.get("Available"):
-            dishes = Dishes.objects.filter(is_available=True)
-            return redirect('/dishes/')
-        elif request.POST.get("Unavailable"):
-            dishes = Dishes.objects.filter(is_available=False)
-            return redirect('/dishes/')
+            dishes = Dishes.objects.filter(category__id=category)
+            # return redirect('/billing/dishes/')
+        else:
+            print("No Search Parameter")
+        # elif request.POST.get("Available"):
+        #     dishes = Dishes.objects.filter(is_available=True)
+        #     return redirect('/dishes/')
+        # elif request.POST.get("Unavailable"):
+        #     dishes = Dishes.objects.filter(is_available=False)
+        #     return redirect('/dishes/')
 
         
     dish_list = []
