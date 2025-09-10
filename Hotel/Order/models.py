@@ -17,7 +17,7 @@ class Dishes(models.Model):
     price = models.IntegerField()
     optional = models.CharField(choices=ch, null=True, blank=True, max_length=100)
     is_available = models.BooleanField(default=True)
-    dish_image = models.ImageField(upload_to="Images", null=True, blank=True)
+    dish_image = models.ImageField(upload_to="Images", null=True, blank=True, default='Images/default.png')
     def __str__(self):
         return f"{self.dish_name} - {self.category},  Available:   {self.is_available}"
 
