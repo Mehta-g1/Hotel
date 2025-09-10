@@ -800,3 +800,15 @@ header {
     margin-bottom: 10px;
     color: #3b548e;
 }
+
+.is_available
+{
+    color: green;
+    font-weight: bold;
+}
+
+.not-available
+{
+    color: red;
+    font-weight: bold;
+}

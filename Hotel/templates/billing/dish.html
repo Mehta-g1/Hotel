@@ -35,9 +35,10 @@
       
       <header class="page-title">Dishes Management</header>
       <div class="header-actions">
-        <form class="search-form" method="GET">
+        <form class="search-form" method="POST" action="/billing/dishes/">
+          {% csrf_token %}
           <input type="text" name="search" id="searchInput" placeholder="Search dishes..." class="search-input">
-          <a href="# " class="search-btn btn btn-primary">Search</a>
+          <button type="submit" class="search-btn btn btn-primary">Search</button>
         </form>
       </div>
     </header>
@@ -71,7 +72,14 @@
 
       <div class="dishes-section">
         <div class="section-header">
-          <h2 id="dishCount">{{length}} Dishes</h2>
+            {% if data.is_search %}
+            <h2 id="dishCount">Found {{length}} dishes for search: '{{data.is_search}}'</h2>
+            {% elif data.is_filter %}
+            <h2 id="dishCount">Filtered {{length}} dishes found</h2>
+          {% else %}
+            <h2 id="dishCount">All Dishes: {{length}} Dishes</h2>
+          {% endif %}
+          
 
         </div>
 
@@ -95,7 +103,16 @@
               </div>
               <div class="dish-id">ID: {{dish.id}}</div>
               <p class="dish-recipe"> {{dish.receipe}}</p>
-              <div class="dish-price">{{dish.price}}</div>
+              <div class="dish-availability">
+                {% if dish.is_available %}
+                  <p class="is_available">Available</p>
+                {% else %}
+                  <p class="not-available">Not Available</p>
+                {% endif %}
+              </div>
+              <div class="dish-price">₹ {{dish.price}}</div>
+              
+              
             </div>
           </div>
           {% endfor %}

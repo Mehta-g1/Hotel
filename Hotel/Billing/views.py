@@ -46,6 +46,8 @@ def dishes(request):
 
     dishes = Dishes.objects.all()
     Category = Categories.objects.all()
+    is_search = ''
+    is_filter = ''
     ct = [{'category':'ALL','id':0}]
     for c in Category:
         ct.append({'category':c.category_name,'id':c.id})
@@ -55,17 +57,21 @@ def dishes(request):
         
         if request.POST.get("search"):
             search = request.POST.get("search")
+            print(f"\n\n\nSearch Parameter: {search}\n\n\n")
             dishes = Dishes.objects.filter(
-                Q(dish_name__icontains=search) | Q(category__icontains=search | Q(id__icontains=search))
+                Q(dish_name__icontains=search) |
+                Q(category__category_name__icontains=search) |
+                Q(id__icontains=search)
             )
-            return redirect('/dishes/')
-        
+            is_search = search
+
         elif request.POST.get("category"):
-            # print("Hello")
-            print(request.POST.get('category'))
             category = request.POST.get("category")
-            dishes = Dishes.objects.filter(category__id=category)
-            # return redirect('/billing/dishes/')
+            if category == '0':
+                dishes = Dishes.objects.all()
+            else:
+                dishes = Dishes.objects.filter(category__id=category)
+                is_filter = True
         else:
             print("No Search Parameter")
         # elif request.POST.get("Available"):
@@ -89,7 +95,7 @@ def dishes(request):
     # print(dish_list)
     length = len(dish_list)
     
-    data = {'categories':ct, 'dishes':dish_list}
+    data = {'categories':ct, 'dishes':dish_list,'is_search':is_search,'is_filter':is_filter}
                                                             
     return render(request, 'billing/dish.html', {'title':'Dish manager', 'data':data, 'length':length})
 
