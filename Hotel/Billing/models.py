@@ -5,9 +5,11 @@ class Cashier(models.Model):
     ch = [("Day","Day"), ("Night", "Night")]
     chashier_name = models.CharField(max_length=100)
     shift = models.CharField(choices=ch, max_length=50)
+    email = models.EmailField(max_length=150, unique=True,null=False,blank=False )
+    password = models.CharField(max_length=128, null=False, blank=False)
 
     def __str__(self):
-        return self.chashier_name
+        return f"{self.chashier_name}  - {self.email}"
 
 class Bill(models.Model):
 

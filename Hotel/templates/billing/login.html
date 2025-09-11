@@ -1,0 +1,35 @@
+{% extends "billing/base.html" %}
+{% load static %}
+
+{% block title %}Login -{% endblock %}
+
+{% block content %}
+<style>
+
+</style>
+
+<div class="login-card">
+    <h2 class="fw-bold">Cashier Login</h2>
+    <form method="POST" action="verify/">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label text-dark fw-bold">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" required placeholder="Email">
+            {% comment %} <div id="emailHelp" class="form-text text-muted">We'll never share your email.</div> {% endcomment %}
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label text-dark fw-bold">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required placeholder="Password">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="rememberMe">
+            <label class="form-check-label text-dark fw-bold" for="rememberMe">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-primary fw-bold">Login</button>
+    </form>
+
+    <div class="extra-links">
+        <p><a href="#">Forgot password?</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -20,11 +20,14 @@ from django.urls import path, include
 from Act import views
 from django.conf import settings
 from django.conf.urls.static import static
+from Billing.views import Login, logining
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('',Login, name='login'),
     path("billing/",include("Billing.urls")),
-    path('', include('Act.urls')),
+    path('in/', include('Act.urls')),
+    path('verify/', logining, name="verify/"),
 
 
     path("__reload__/", include("django_browser_reload.urls")),

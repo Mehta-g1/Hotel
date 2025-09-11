@@ -3,6 +3,7 @@ from .models import *
 from django.http import HttpResponse
 from Order.models import *
 from django.db.models import Q
+from django.contrib import messages
 
 def Home(request):
     cashier = Cashier.objects.all()[0].chashier_name
@@ -99,3 +100,24 @@ def dishes(request):
                                                             
     return render(request, 'billing/dish.html', {'title':'Dish manager', 'data':data, 'length':length})
 
+
+
+def Login(request):
+    return render(request, 'billing/login.html')
+
+
+def logining(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        cashier = Cashier.objects.filter(email=email).first()
+
+        if cashier and cashier.password == password:   # (better: use hashing)
+            print("Login success")
+            return redirect('/billing/')
+        else:
+            print("Invalid credentials")
+            messages.error("Invalid creadential !")
+            return redirect('login/')
+    return render(request, 'billing/login.html')
