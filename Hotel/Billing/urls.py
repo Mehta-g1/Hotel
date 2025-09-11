@@ -9,6 +9,6 @@ urlpatterns = [
     # path('reports/',views.Reports, name="reports"),
     path('search-dish/',views.dishes, name="search-dish"),
     path('update-availability/',views.dishes, name="update-availability"),
-    path("login/", views.Login, name='login'),
+    # path("login/", views.Login, name='login'),
     
 ]

@@ -133,3 +133,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+from django.contrib.messages import constants as message_constants
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
+# Optional: Bootstrap friendly tag mapping
+MESSAGE_TAGS = {
+    message_constants.DEBUG: "secondary",
+    message_constants.INFO: "info",
+    message_constants.SUCCESS: "success",
+    message_constants.WARNING: "warning",
+    message_constants.ERROR: "danger",
+}

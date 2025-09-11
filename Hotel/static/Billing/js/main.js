@@ -592,3 +592,13 @@ class POSApp {
 document.addEventListener("DOMContentLoaded", () => {
     new POSApp();
 });
+
+
+
+setTimeout(function () {
+    let alerts = document.querySelectorAll('#msg-container .alert');
+    alerts.forEach(function (alert) {
+        let bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+    });
+}, 3000); // 3000 ms = 3 seconds

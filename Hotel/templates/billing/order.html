@@ -103,10 +103,26 @@
         </div>
 
         <!-- Billing Section -->
+
+          
+
+
         <div class="col-lg-5">
           <div class="bill-section">
             <div class="card bill-box shadow-lg">
               <div class="card-header bill-header">
+
+                {% if messages %}
+                <div id="msg-container">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show " role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
                 <h4>🍴 Royal Palace Hotel</h4>
                 <small>123 MG Road, Patna | +91-9876543210</small><br>
                 <small id="billDate"></small>

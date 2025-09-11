@@ -19,7 +19,7 @@ def Home(request):
             category = e.category.category_name
             dish = {'id':id,'name':name +" -"+category,'description':description,'price':price, 'category':category }
             dishes.append(dish)
-
+    messages.success(request, "Login Success !")
     return render(request, 'billing/order.html',{'cashier':cashier,'dishes':dishes})
 
 def Reports(request):
@@ -118,6 +118,6 @@ def logining(request):
             return redirect('/billing/')
         else:
             print("Invalid credentials")
-            messages.error("Invalid creadential !")
-            return redirect('login/')
+            messages.error(request, "Invalid creadential !")
+            return redirect('login')
     return render(request, 'billing/login.html')
