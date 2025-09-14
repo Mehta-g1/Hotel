@@ -6,7 +6,11 @@ from django.db.models import Q
 from django.contrib import messages
 
 def Home(request):
-    cashier = Cashier.objects.all()[0].chashier_name
+    cashier_id =  request.session.get('cashier_id')
+    if not cashier_id:
+        messages.error(request,"Something went wrong ❌")
+        return redirect('login')
+    cashier = Cashier.objects.get(id = cashier_id)
     dishes = []
     d = Dishes.objects.all()
     # print(bill_no)
@@ -20,7 +24,7 @@ def Home(request):
             dish = {'id':id,'name':name +" -"+category,'description':description,'price':price, 'category':category }
             dishes.append(dish)
     messages.success(request, "Login Success !")
-    return render(request, 'billing/order.html',{'cashier':cashier,'dishes':dishes})
+    return render(request, 'billing/order.html',{'cashier':cashier.chashier_name,'dishes':dishes})
 
 def Reports(request):
     return HttpResponse("Daily Reports")
@@ -103,6 +107,10 @@ def dishes(request):
 
 
 def Login(request):
+    
+    chashier_id = request.session.get('cashier_id')
+    if chashier_id:
+        del request.session['cashier_id']
     return render(request, 'billing/login.html')
 
 
@@ -115,9 +123,22 @@ def logining(request):
 
         if cashier and cashier.password == password:   # (better: use hashing)
             print("Login success")
+            request.session["cashier_id"] = cashier.id
             return redirect('/billing/')
         else:
             print("Invalid credentials")
             messages.error(request, "Invalid creadential !")
             return redirect('login')
     return render(request, 'billing/login.html')
+
+def logout(request):
+    cashier_id = request.session.get('cashier_id')
+    if cashier_id:
+        del request.session['cashier_id']
+        messages.success(request, "Logged out successfully !")
+        return redirect('login')
+    messages.error(request, "Something went wrong !")
+    return redirect('login')
+
+
+

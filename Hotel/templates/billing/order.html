@@ -9,22 +9,23 @@
    
     <div class="sidebar" id="sidebar">
     <h4 class="text-center mb-4">🍽 Hotel Admin</h4>
-    <a href="#">🏠 Dashboard</a>
-    <a href="#">📋 Orders</a>
+    <a href=" {% url "dashboard" %} ">🏠 Dashboard</a>
+    {% comment %} <a href="#">📋 Orders</a> {% endcomment %}
     <a href=" {% url "dishes" %} ">🍕 Dishes</a>
-    <a href="#">👥 Customers</a>
+    {% comment %} <a href="#">👥 Customers</a> {% endcomment %}
     <a href="#">💳 Billing</a>
-    <a href="#">📦 Inventory</a>
+    {% comment %} <a href="#">📦 Inventory</a> {% endcomment %}
     <a href="#">📊 Reports</a>
-    <a href="#">⚙ Settings</a>
+    {% comment %} <a href="#">⚙ Settings</a> {% endcomment %}
     <a href="#">❓ Help</a>
-    <a href="#">🚪 Logout</a>
+    <a href=" {% url "logout" %} ">🚪 Logout</a>
   </div>
 
   <div class="bill">
      <div class="bill-container" id="bill">
       <div class="bill-header">
         <h2>🍴 Royal Palace Hotel</h2>
+        
         <small>123 MG Road, Patna | +91-9876543210</small><br>
         <small>Date: <span id="billDate"></span></small>
       </div>
@@ -123,7 +124,8 @@
                 </div>
                 {% endif %}
                 
-                <h4>🍴 Royal Palace Hotel</h4>
+                <h4 class="text-light">🍴 Royal Palace Hotel</h4>
+                <p class="text-light fw-bolder">Cashier Name: {{cashier}}</p>
                 <small>123 MG Road, Patna | +91-9876543210</small><br>
                 <small id="billDate"></small>
               </div>

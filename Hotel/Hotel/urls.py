@@ -28,7 +28,7 @@ urlpatterns = [
     path("billing/",include("Billing.urls")),
     path('in/', include('Act.urls')),
     path('verify/', logining, name="verify/"),
-
+    path('dashboard/', views.Home, name='dashboard'),
 
     path("__reload__/", include("django_browser_reload.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
