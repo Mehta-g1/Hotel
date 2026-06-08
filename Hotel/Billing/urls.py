@@ -4,12 +4,8 @@ from . import views
 
 urlpatterns = [
     path('',views.Home,  name='billing'),
-    # path('checkout/',views.checkout, name = "checkout/"),
-    path('dishes/',views.dishes, name="dishes"),
-    # path('reports/',views.Reports, name="reports"),
-    path('search-dish/',views.dishes, name="search-dish"),
-    path('update-availability/',views.dishes, name="update-availability"),
-    # path("login/", views.Login, name='login'),
+    path('checkout/',views.checkout, name = "checkout"),
+    path('reports/',views.Reports, name="reports"),
     path('logout/', views.logout, name='logout'),
-    
+    path('request_modification/<int:bill_id>/', views.request_modification, name='request_modification'),
 ]

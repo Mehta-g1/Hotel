@@ -1,0 +1,109 @@
+{% extends "admin_app/base.html" %}
+
+{% block title %}Edit Bill #{{ bill.id }}{% endblock %}
+{% block header %}Modify Bill Items{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Current Items in Bill -->
+    <div class="col-lg-8">
+        <div class="card admin-card h-100">
+            <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
+                <h5 class="fw-bold mb-0 theme-primary"><i class="fas fa-receipt me-2"></i> Bill #{{ bill.id }} - Items</h5>
+                <p class="text-muted small mt-1">Cashier: {{ bill.cashier_name.chashier_name|default:"Unknown" }} | Date: {{ bill.bill_date|date:"M d, Y H:i" }}</p>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center">Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in bill.billitem_set.all %}
+                            <tr>
+                                <td>
+                                    <strong>{{ item.dish.dish_name }}</strong><br>
+                                    <small class="text-muted">{{ item.dish.category.category_name }}</small>
+                                </td>
+                                <td class="text-center">{{ item.quantity }}</td>
+                                <td>₹{{ item.price|floatformat:2 }}</td>
+                                <td>₹{{ item.get_total|floatformat:2 }}</td>
+                                <td class="text-end">
+                                    <form method="POST" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="submit" name="remove_item" class="btn btn-sm btn-outline-danger" title="Remove Item">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No items left in this bill.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot class="table-light fw-bold">
+                            <tr>
+                                <td colspan="3" class="text-end">Subtotal:</td>
+                                <td colspan="2">₹{{ bill.subtotal|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-end">Tax (18%):</td>
+                                <td colspan="2">₹{{ bill.taxAmt|floatformat:2 }}</td>
+                            </tr>
+                            <tr class="fs-5 theme-success">
+                                <td colspan="3" class="text-end">Grand Total:</td>
+                                <td colspan="2">₹{{ bill.subtotal|add:bill.taxAmt|floatformat:2 }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Item -->
+    <div class="col-lg-4">
+        <div class="card admin-card">
+            <div class="card-header bg-white pt-4 pb-0 border-bottom-0">
+                <h5 class="fw-bold mb-0 theme-success"><i class="fas fa-plus-circle me-2"></i> Add Item</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-bold">Select Dish</label>
+                        <select name="dish_id" class="form-select" required>
+                            <option value="">-- Choose Dish --</option>
+                            {% for dish in dishes %}
+                            <option value="{{ dish.id }}">{{ dish.dish_name }} (₹{{ dish.price }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted fw-bold">Quantity</label>
+                        <input type="number" name="qty" class="form-control" value="1" min="1" required>
+                    </div>
+                    <button type="submit" name="add_dish" class="btn btn-success w-100 fw-bold py-2">
+                        <i class="fas fa-plus me-2"></i> Add to Bill
+                    </button>
+                </form>
+                
+                <hr class="my-4">
+                
+                <a href="{% url 'manage_bills' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-arrow-left me-2"></i> Back to Bills
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

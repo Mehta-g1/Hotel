@@ -1,0 +1,94 @@
+{% extends "admin_app/base.html" %}
+
+{% block title %}Manage Bills{% endblock %}
+{% block header %}Bill Management & Cancellations{% endblock %}
+
+{% block content %}
+<div class="card admin-card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="mb-0 fw-bold theme-warning"><i class="fas fa-bell me-2"></i> Pending Modification Requests</h5>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Request Time</th>
+                    <th>Cashier</th>
+                    <th>Bill #</th>
+                    <th>Type</th>
+                    <th>Reason</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in pending_requests %}
+                <tr>
+                    <td>{{ req.created_at|date:"M d, H:i" }}</td>
+                    <td><strong>{{ req.cashier.chashier_name }}</strong></td>
+                    <td><span class="badge bg-secondary">#{{ req.bill.id }}</span></td>
+                    <td>
+                        {% if req.request_type == 'Delete' %}
+                        <span class="badge bg-danger">Delete</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark">Modify</span>
+                        {% endif %}
+                    </td>
+                    <td><small class="text-muted">{{ req.reason }}</small></td>
+                    <td class="text-end">
+                        <a href="{% url 'handle_request' req.id 'approve' %}" class="btn btn-sm btn-success me-1">Approve</a>
+                        <a href="{% url 'handle_request' req.id 'reject' %}" class="btn btn-sm btn-danger">Reject</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">No pending requests from cashiers.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card admin-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="mb-0 fw-bold theme-primary"><i class="fas fa-file-invoice-dollar me-2"></i> All Transactions</h5>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Bill #</th>
+                    <th>Date & Time</th>
+                    <th>Cashier</th>
+                    <th>Total Amt</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td><strong>#{{ bill.id }}</strong></td>
+                    <td>{{ bill.bill_date|date:"M d, Y H:i" }}</td>
+                    <td><span class="badge bg-secondary">{{ bill.cashier_name.chashier_name|default:"Unknown" }}</span></td>
+                    <td class="text-success fw-bold">₹{{ bill.subtotal|add:bill.taxAmt|floatformat:2 }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'edit_bill' bill.id %}" class="btn btn-sm btn-outline-primary me-1">
+                            <i class="fas fa-edit"></i> Edit Items
+                        </a>
+                        <a href="{% url 'delete_bill' bill.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-ban"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">No bills generated yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

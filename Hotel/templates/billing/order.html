@@ -13,12 +13,12 @@
     {% comment %} <a href="#">📋 Orders</a> {% endcomment %}
     <a href=" {% url "dishes" %} ">🍕 Dishes</a>
     {% comment %} <a href="#">👥 Customers</a> {% endcomment %}
-    <a href="#">💳 Billing</a>
+    <a href="{% url 'billing' %}" class="active">💳 Billing</a>
     {% comment %} <a href="#">📦 Inventory</a> {% endcomment %}
-    <a href="#">📊 Reports</a>
+    <a href="{% url 'reports' %}">📊 Reports</a>
     {% comment %} <a href="#">⚙ Settings</a> {% endcomment %}
-    <a href="#">❓ Help</a>
-    <a href=" {% url "logout" %} ">🚪 Logout</a>
+    <a href="{% url 'About' %}">❓ Help</a>
+    <a href="{% url 'logout' %}">🚪 Logout</a>
   </div>
 
   <div class="bill">
@@ -131,7 +131,7 @@
               </div>
 
               <div class="card-body p-0">
-                
+                <input type="hidden" id="current_cashier_id" value="{{ cashier_id }}">
                   {% csrf_token %}
                   <table class="table table-borderless text-center align-middle mb-0">
                     <thead class="table-dark">

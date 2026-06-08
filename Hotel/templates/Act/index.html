@@ -10,11 +10,12 @@
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
     <ul id="menu">
       <li><a href="#home" class="active">Home</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="{% url 'About' %}">About</a></li>
       <li><a href="#rooms">Rooms</a></li>
       <li><a href="#booking">Booking</a></li>
       <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="{% url 'Contact' %}">Contact</a></li>
+      <li><a href="{% url 'login' %}" class="btn-staff-login" style="background: #e67e22; padding: 8px 15px; border-radius: 5px; color: white;">Staff Login</a></li>
     </ul>
   </nav>
 
@@ -23,7 +24,6 @@
     <div class="hero-content">
       <h1>Welcome to Royal Palace</h1>
       <p>Luxury & Comfort for your stay</p>
-      <p>Cashier name: {{cashier}}</p>
       <button onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Now</button>
     </div>
   </section>

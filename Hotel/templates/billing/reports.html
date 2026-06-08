@@ -1,0 +1,186 @@
+{% extends "billing/base.html" %}
+
+{% block title %}Daily Reports - {{ cashier }}{% endblock %}
+
+{% block content %}
+<style>
+    @media print {
+        body * { visibility: hidden; }
+        .print-section, .print-section * { visibility: visible; }
+        .print-section { position: absolute; left: 0; top: 0; width: 100%; }
+        .no-print { display: none !important; }
+        .sidebar { display: none !important; }
+        .menu-btn { display: none !important; }
+    }
+    .report-card {
+        background: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        color: #fff;
+        border: 1px solid #333;
+    }
+    .btn-group .btn {
+        border-radius: 0;
+    }
+    .btn-group .btn:first-child { border-top-left-radius: 5px; border-bottom-left-radius: 5px; }
+    .btn-group .btn:last-child { border-top-right-radius: 5px; border-bottom-right-radius: 5px; }
+</style>
+
+<div class="d-flex">
+    <!-- Sidebar exactly like Billing -->
+    <div class="sidebar no-print" id="sidebar">
+        <h4 class="text-center mb-4">🍽 Hotel Admin</h4>
+        <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'dishes' %}">🍕 Dishes</a>
+        <a href="{% url 'billing' %}">💳 Billing</a>
+        <a href="{% url 'reports' %}" class="active">📊 Reports</a>
+        <a href="{% url 'About' %}">❓ Help</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content flex-grow-1 p-4 print-section" id="content">
+        <span class="menu-btn no-print" id="menu-btn">☰</span>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2 mt-2">
+            <div>
+                <h2 class="text-light">Sales Report - <span class="text-warning">{{ cashier }}</span></h2>
+                <p class="text-light opacity-75">Overview of revenue and generated bills.</p>
+            </div>
+            <div class="no-print d-flex gap-2">
+                <button onclick="window.print()" class="btn btn-outline-light"><i class="fas fa-print"></i> Print Report</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Side: Metrics and Filters -->
+            <div class="col-lg-4">
+                <!-- Metrics -->
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <div class="card bg-success text-white shadow h-100">
+                            <div class="card-body p-4">
+                                <h6 class="card-title text-uppercase opacity-75 mb-3"><i class="fas fa-wallet"></i> Total Revenue</h6>
+                                <h2 class="fw-bold mb-0">₹{{ total_revenue|floatformat:2 }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card bg-primary text-white shadow h-100">
+                            <div class="card-body p-4">
+                                <h6 class="card-title text-uppercase opacity-75 mb-3"><i class="fas fa-receipt"></i> Total Orders</h6>
+                                <h2 class="fw-bold mb-0">{{ total_orders }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card report-card p-4 mb-4 no-print">
+                    <h5 class="text-light mb-4 border-bottom pb-2 border-secondary">Filter Reports</h5>
+                    <form method="GET" class="d-flex flex-column gap-4">
+                        <div>
+                            <label class="form-label fw-bold text-light mb-2">Quick Date Ranges</label>
+                            <div class="btn-group w-100" role="group">
+                                <button type="submit" name="filter" value="today" class="btn btn-{% if filter_type == 'today' %}primary{% else %}outline-primary{% endif %}">Today</button>
+                                <button type="submit" name="filter" value="week" class="btn btn-{% if filter_type == 'week' %}primary{% else %}outline-primary{% endif %}">Week</button>
+                                <button type="submit" name="filter" value="month" class="btn btn-{% if filter_type == 'month' %}primary{% else %}outline-primary{% endif %}">Month</button>
+                                <button type="submit" name="filter" value="all" class="btn btn-{% if filter_type == 'all' %}primary{% else %}outline-primary{% endif %}">All Time</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label fw-bold text-light mb-2">Specific Date</label>
+                            <input type="date" name="date" class="form-control" value="{{ specific_date }}" style="background: #2b2b2b; color: white; border: 1px solid #444;">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success w-100 py-2 fw-bold">Apply Filters</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side: Bills Table -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm report-card h-100">
+                    <div class="card-header border-bottom-0 d-flex justify-content-between align-items-center" style="background: #2a2a2a; border-radius: 12px 12px 0 0;">
+                        <h5 class="mb-0 text-white"><i class="fas fa-list"></i> Bills Breakdown</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive" style="max-height: 700px; overflow-y: auto;">
+                            <table class="table table-hover table-dark mb-0">
+                                <thead>
+                                    <tr style="position: sticky; top: 0; background: #222; z-index: 1;">
+                                        <th class="ps-4">Bill #</th>
+                                        <th>Date & Time</th>
+                                        <th>Subtotal</th>
+                                        <th>Tax</th>
+                                        <th>Total</th>
+                                        <th class="pe-4 no-print text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for bill in bills %}
+                                    <tr>
+                                        <td class="ps-4"><strong>#{{ bill.id }}</strong></td>
+                                        <td>{{ bill.bill_date|date:"M d, Y H:i" }}</td>
+                                        <td>₹{{ bill.subtotal|floatformat:2 }}</td>
+                                        <td>₹{{ bill.taxAmt|floatformat:2 }}</td>
+                                        <td class="text-success fw-bold">₹{{ bill.subtotal|add:bill.taxAmt|floatformat:2 }}</td>
+                                        <td class="pe-4 no-print text-end">
+                                            <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#requestModal{{ bill.id }}">
+                                                <i class="fas fa-edit"></i> Request Change
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Request Modal -->
+                                    <div class="modal fade text-dark" id="requestModal{{ bill.id }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content bg-dark text-light border-secondary">
+                                                <div class="modal-header border-secondary">
+                                                    <h5 class="modal-title">Request Modification - Bill #{{ bill.id }}</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form action="{% url 'request_modification' bill.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Type of Request</label>
+                                                            <select name="request_type" class="form-select bg-dark text-light border-secondary" required>
+                                                                <option value="Modify">Modify Bill (Add/Remove Items)</option>
+                                                                <option value="Delete">Delete Bill Completely</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Valid Reason</label>
+                                                            <textarea name="reason" rows="3" class="form-control bg-dark text-light border-secondary" required placeholder="Explain why this bill needs to be changed..."></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer border-secondary">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-warning">Submit Request</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center p-5 text-muted">
+                                            <i class="fas fa-file-invoice fa-3x mb-3"></i>
+                                            <h5>No bills found for this time period.</h5>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

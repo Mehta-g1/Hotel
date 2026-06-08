@@ -122,7 +122,9 @@ class CartManager {
     }
 
     prepareBillData() {
-        const billItems = [{ dataType: "Bill Details" }];
+        const cashierIdEl = document.getElementById("current_cashier_id");
+        const cashierId = cashierIdEl ? parseInt(cashierIdEl.value) : 1;
+        const billItems = [{ dataType: "Bill Details", cashier_id: cashierId }];
 
         for (let key in this.cart) {
             const item = this.cart[key];

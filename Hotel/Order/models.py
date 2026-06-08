@@ -21,5 +21,12 @@ class Dishes(models.Model):
     def __str__(self):
         return f"{self.dish_name} - {self.category},  Available:   {self.is_available}"
 
+    def delete(self, *args, **kwargs):
+        import os
+        if self.dish_image and self.dish_image.name != 'Images/default.png':
+            if os.path.isfile(self.dish_image.path):
+                os.remove(self.dish_image.path)
+        super().delete(*args, **kwargs)
+
 
 

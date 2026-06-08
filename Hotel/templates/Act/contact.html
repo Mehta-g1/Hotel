@@ -1,0 +1,238 @@
+{% extends "Act/Base.html" %}
+{% load static %}
+
+{% block title %}Contact Us - Royal Palace{% endblock %}
+
+{% block content %}
+<style>
+    .full-width-section {
+        width: 100%;
+        max-width: 100%;
+        padding: 60px 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .contact-hero {
+        background: url("https://images.unsplash.com/photo-1582719478250-c89cae4dc85b") no-repeat center center/cover;
+        height: 50vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        color: white;
+    }
+
+    .contact-hero::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .contact-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .contact-hero h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .contact-container {
+        display: flex;
+        width: 100%;
+        max-width: 1400px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-top: -80px; /* Overlap the hero section slightly */
+        position: relative;
+        z-index: 5;
+        text-align: left;
+    }
+
+    .contact-info {
+        flex: 1;
+        background: #2c3e50;
+        color: white;
+        padding: 60px;
+    }
+
+    .contact-info h3 {
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #f1c40f;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px;
+        font-size: 18px;
+    }
+
+    .info-item i {
+        font-size: 24px;
+        color: #f1c40f;
+        margin-right: 20px;
+        margin-top: 5px;
+    }
+
+    .contact-form-wrapper {
+        flex: 1.5;
+        padding: 60px;
+        background: #fff;
+    }
+
+    .contact-form-wrapper h3 {
+        font-size: 32px;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+
+    .contact-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        background: #f9f9f9;
+        transition: 0.3s;
+    }
+
+    .contact-form input:focus, .contact-form textarea:focus {
+        border-color: #2c3e50;
+        outline: none;
+        background: #fff;
+    }
+
+    .submit-btn {
+        background: #f1c40f;
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+        background: #2c3e50;
+        color: #fff;
+    }
+</style>
+
+<!-- Navbar -->
+<nav>
+    <div class="logo">Hotel Paradise</div>
+    <ul id="menu" style="width: 100%; justify-content: flex-end;">
+      <li><a href="{% url 'dashboard' %}">Home</a></li>
+      <li><a href="{% url 'About' %}">About</a></li>
+      <li><a href="{% url 'Contact' %}" class="active">Contact</a></li>
+      <li><a href="{% url 'login' %}" class="btn-staff-login" style="background: #e67e22; padding: 8px 15px; border-radius: 5px; color: white; margin-left: 30px;">Staff Login</a></li>
+    </ul>
+</nav>
+
+<!-- Hero Section -->
+<section class="contact-hero">
+    <div class="contact-hero-content">
+        <h1>Get In Touch</h1>
+        <p style="font-size: 24px;">We are here to assist you with your reservations and inquiries.</p>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="full-width-section" style="background: #f4f6f9; padding-bottom: 100px;">
+    
+    <div class="contact-container">
+        <!-- Contact Information Side -->
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p style="margin-bottom: 40px; font-size: 18px; line-height: 1.6;">Fill up the form and our team will get back to you within 24 hours.</p>
+            
+            <div class="info-item">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <strong>Phone Reservations</strong><br>
+                    +91 98765 43210<br>
+                    +91 11223 34455
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <strong>Email Address</strong><br>
+                    reservations@royalpalace.com<br>
+                    support@royalpalace.com
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <strong>Location</strong><br>
+                    123 Paradise Street,<br>
+                    Connaught Place,<br>
+                    New Delhi, India 110001
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Side -->
+        <div class="contact-form-wrapper">
+            <h3>Send a Message</h3>
+            <form class="contact-form">
+                <div>
+                    <input type="text" placeholder="First Name" required>
+                </div>
+                <div>
+                    <input type="text" placeholder="Last Name" required>
+                </div>
+                <div class="full-width">
+                    <input type="email" placeholder="Email Address" required>
+                </div>
+                <div class="full-width">
+                    <input type="text" placeholder="Subject">
+                </div>
+                <div class="full-width">
+                    <textarea rows="5" placeholder="Write your message here..." required></textarea>
+                </div>
+                <div>
+                    <button type="button" class="submit-btn">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+<!-- Load FontAwesome for contact icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Footer -->
+<footer style="background: #2c3e50; color: #fff; text-align: center; padding: 30px; margin-top: 0; width: 100%;">
+    <p>📍 123 Paradise Street, New Delhi | 📞 +91 9876543210</p>
+    <p>&copy; 2025 Hotel Paradise. All rights reserved.</p>
+</footer>
+{% endblock %}

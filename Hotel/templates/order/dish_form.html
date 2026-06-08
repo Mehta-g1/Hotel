@@ -1,0 +1,66 @@
+{% extends "billing/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="d-flex h-100">
+    <div class="sidebar" id="sidebar">
+        <h4 class="text-center mb-4">🍽 Hotel Admin</h4>
+        {% if is_admin %}
+        <a href="{% url 'admin_dashboard' %}">🏠 Admin Dash</a>
+        <a href="{% url 'dishes' %}" class="active">🍕 Manage Dishes</a>
+        {% else %}
+        <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'dishes' %}" class="active">🍕 Dishes</a>
+        <a href="{% url 'billing' %}">💳 Billing</a>
+        <a href="{% url 'reports' %}">📊 Reports</a>
+        <a href="{% url 'About' %}">ℹ️ About</a>
+        <a href="{% url 'Contact' %}">📞 Contact</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+        {% endif %}
+    </div>
+    <div class="content flex-grow-1 p-5">
+        <h2>{{ title }}</h2>
+        <div class="card mt-4 shadow-sm col-md-8">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label>Dish Name</label>
+                        <input type="text" name="dish_name" class="form-control" value="{{ dish.dish_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Category</label>
+                        <select name="category" class="form-control" required>
+                            {% for c in categories %}
+                            <option value="{{ c.id }}" {% if dish.category.id == c.id %}selected{% endif %}>{{ c.category_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Price (₹)</label>
+                        <input type="number" name="price" class="form-control" value="{{ dish.price }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Recipe / Description</label>
+                        <textarea name="receipe" class="form-control" rows="3">{{ dish.receipe }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Optional Tag</label>
+                        <select name="optional" class="form-control">
+                            <option value="">None</option>
+                            <option value="SG" {% if dish.optional == 'SG' %}selected{% endif %}>Signature</option>
+                            <option value="SP" {% if dish.optional == 'SP' %}selected{% endif %}>Spicy</option>
+                            <option value="Special" {% if dish.optional == 'Special' %}selected{% endif %}>Special</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="is_available" class="form-check-input" id="isAvailable" {% if dish.is_available or not dish %}checked{% endif %}>
+                        <label class="form-check-label" for="isAvailable">Is Available?</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Dish</button>
+                    <a href="{% url 'dishes' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

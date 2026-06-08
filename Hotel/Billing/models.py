@@ -34,3 +34,17 @@ class BillItem(models.Model):
     def __str__(self):
         return f"{self.dish.dish_name}  -Quantity: {self.quantity}"
 
+
+class ModificationRequest(models.Model):
+    REQ_TYPES = [('Modify', 'Modify'), ('Delete', 'Delete')]
+    STATUS_CHOICES = [('Pending', 'Pending'), ('Approved', 'Approved'), ('Rejected', 'Rejected')]
+    
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    cashier = models.ForeignKey(Cashier, on_delete=models.CASCADE)
+    request_type = models.CharField(max_length=20, choices=REQ_TYPES)
+    reason = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.request_type} Request for Bill #{self.bill.id} - {self.status}"

@@ -17,19 +17,19 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from Act import views
 from django.conf import settings
 from django.conf.urls.static import static
-from Billing.views import Login, logining
+from Act import views as Act_views
+from Billing import views as Billing_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('',Login, name='login'),
+    path('', Act_views.Home, name='dashboard'),
+    path('login/', Billing_views.Login, name='login'),
     path("billing/",include("Billing.urls")),
+    path('admin_app/', include("Admin.urls")),
+    path('order/', include("Order.urls")),
     path('in/', include('Act.urls')),
-    path('verify/', logining, name="verify/"),
-    path('dashboard/', views.Home, name='dashboard'),
-
     path("__reload__/", include("django_browser_reload.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

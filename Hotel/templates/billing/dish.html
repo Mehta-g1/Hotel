@@ -11,23 +11,22 @@
 
 
   
-  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-<div class="sidebar" id="sidebar">
-    <h2>Welcome Vikash  </h2> <hr>
-    <ul>
-      <li><a href=" {% url "dashboard" %} "><i class="fa fa-home"></i> Dashboard</a></li>
-      {% comment %} <li><i class="fa fa-clipboard"></i> Orders</li> {% endcomment %}
-      <li><a href="#"><i class="fa fa-pizza-slice"></i> Dishes</a></li>
-      {% comment %} <li><i class="fa fa-users"></i> Customers</li> {% endcomment %}
-      <li><a href=" {% url "billing" %} "><i class="fa fa-credit-card"></i> Billing</a></li>
-      {% comment %} <li><i class="fa fa-box"></i> Inventory</li> {% endcomment %}
-      <li><i class="fa fa-chart-bar"></i> Reports</li>
-      {% comment %} <li><i class="fa fa-cog"></i> Settings</li> {% endcomment %}
-      <li><i class="fa fa-question-circle"></i> Help</li>
-    </ul>
-    <ul class="logout">
-      <li><a href=" {% url "logout" %} "><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-    </ul>
+  <button class="toggle-btn" onclick="toggleSidebar()" style="position: absolute; left: 15px; top: 15px; z-index: 1000; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">☰</button>
+  <div class="sidebar" id="sidebar">
+    <h4 class="text-center mb-4" style="color: white; margin-top: 20px;">🍽 Hotel Admin</h4>
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px;">
+        {% if data.is_admin %}
+        <a href="{% url 'admin_dashboard' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px;">🏠 Admin Dash</a>
+        <a href="{% url 'dishes' %}" class="active" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px; background: #e67e22;">🍕 Manage Dishes</a>
+        {% else %}
+        <a href="{% url 'dashboard' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px;">🏠 Dashboard</a>
+        <a href="{% url 'dishes' %}" class="active" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px; background: #e67e22;">🍕 Dishes</a>
+        <a href="{% url 'billing' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px;">💳 Billing</a>
+        <a href="{% url 'reports' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px;">📊 Reports</a>
+        <a href="{% url 'About' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px;">❓ Help</a>
+        <a href="{% url 'logout' %}" style="color: white; text-decoration: none; padding: 10px; border-radius: 5px; margin-top: 50px;">🚪 Logout</a>
+        {% endif %}
+    </div>
   </div>
 
     <div class="main-container">
@@ -35,17 +34,23 @@
       
       <header class="page-title">Dishes Management</header>
       <div class="header-actions">
-        <form class="search-form" method="POST" action="/billing/dishes/">
+        <form class="search-form" method="POST" action="{% url 'dishes' %}">
           {% csrf_token %}
           <input type="text" name="search" id="searchInput" placeholder="Search dishes..." class="search-input">
           <button type="submit" class="search-btn btn btn-primary">Search</button>
         </form>
+        {% if data.is_admin %}
+        <div style="margin-top: 10px;">
+          <a href="{% url 'add_dish' %}" class="btn btn-success" style="padding: 8px 12px; text-decoration: none; color: white; background-color: #28a745; border-radius: 4px; margin-right: 5px;">+ Add Dish</a>
+          <a href="{% url 'add_category' %}" class="btn btn-info" style="padding: 8px 12px; text-decoration: none; color: white; background-color: #17a2b8; border-radius: 4px;">+ Add Category</a>
+        </div>
+        {% endif %}
       </div>
     </header>
 
     <div class="content">
       <div class="filters-section">
-        <form class="filter-form" method="POST" action="/billing/dishes/">
+        <form class="filter-form" method="POST" action="{% url 'dishes' %}">
           {% csrf_token %}
           <div class="filter-group">
             <label for="categoryFilter">Category:</label>
@@ -111,7 +116,12 @@
                 {% endif %}
               </div>
               <div class="dish-price">₹ {{dish.price}}</div>
-              
+              {% if data.is_admin %}
+              <div class="dish-actions" style="margin-top: 10px;">
+                <a href="{% url 'edit_dish' dish.id %}" class="btn btn-sm" style="color: white; background-color: #ffc107; padding: 4px 8px; border-radius: 3px; text-decoration: none; font-size: 12px;">Edit</a>
+                <a href="{% url 'delete_dish' dish.id %}" class="btn btn-sm" style="color: white; background-color: #dc3545; padding: 4px 8px; border-radius: 3px; text-decoration: none; font-size: 12px;">Delete</a>
+              </div>
+              {% endif %}
               
             </div>
           </div>

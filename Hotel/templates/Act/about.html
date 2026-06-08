@@ -1,0 +1,142 @@
+{% extends "Act/Base.html" %}
+{% load static %}
+
+{% block title %}About Us - Royal Palace{% endblock %}
+
+{% block content %}
+<style>
+    .full-width-section {
+        width: 100%;
+        max-width: 100%;
+        padding: 60px 10%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .about-hero {
+        background: url("https://images.unsplash.com/photo-1542314831-c6a4d14d837e") no-repeat center center/cover;
+        height: 60vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        color: white;
+    }
+
+    .about-hero::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .about-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .about-hero h1 {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        width: 100%;
+        margin-top: 50px;
+        text-align: left;
+    }
+
+    .info-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        color: #333;
+    }
+
+    .info-card h3 {
+        color: #2c3e50;
+        font-size: 28px;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #f1c40f;
+        padding-bottom: 10px;
+        display: inline-block;
+    }
+
+    .info-card p, .info-card ul {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.8;
+    }
+
+    .info-card ul {
+        padding-left: 20px;
+    }
+
+    .info-card ul li {
+        margin-bottom: 10px;
+    }
+</style>
+
+<!-- Navbar -->
+<nav>
+    <div class="logo">Hotel Paradise</div>
+    <ul id="menu" style="width: 100%; justify-content: flex-end;">
+      <li><a href="{% url 'dashboard' %}">Home</a></li>
+      <li><a href="{% url 'About' %}" class="active">About</a></li>
+      <li><a href="{% url 'Contact' %}">Contact</a></li>
+      <li><a href="{% url 'login' %}" class="btn-staff-login" style="background: #e67e22; padding: 8px 15px; border-radius: 5px; color: white; margin-left: 30px;">Staff Login</a></li>
+    </ul>
+</nav>
+
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="about-hero-content">
+        <h1>Discover Royal Palace</h1>
+        <p style="font-size: 24px;">A legacy of unparalleled luxury and world-class hospitality.</p>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="full-width-section" style="background: #f9f9f9;">
+    <h2 style="font-size: 40px; color: #2c3e50; margin-bottom: 20px;">Welcome to the Grandeur</h2>
+    <p style="max-width: 1200px; font-size: 20px; color: #666;">
+        Established in 1998, Royal Palace has redefined the standard of luxury. Situated in the heart of the city, we provide an oasis of calm, combining modern amenities with timeless elegance.
+    </p>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <h3>Our Mission</h3>
+            <p>
+                To provide exceptional, personalized service that exceeds our guests' expectations, creating unforgettable experiences through our commitment to luxury, comfort, and unparalleled hospitality.
+            </p>
+            <p style="margin-top: 15px;">
+                We strive to be the premier destination for travelers seeking a perfect blend of modern convenience and classic elegance.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h3>Premium Facilities</h3>
+            <ul>
+                <li><strong>Gourmet Dining:</strong> 5-star multi-cuisine restaurants and 24/7 room service.</li>
+                <li><strong>Wellness Spa:</strong> Full-service massage, sauna, and wellness center.</li>
+                <li><strong>Business Hub:</strong> High-speed Wi-Fi, conference rooms, and executive lounges.</li>
+                <li><strong>Infinity Pool:</strong> Temperature-controlled rooftop pool with a city view.</li>
+                <li><strong>Concierge:</strong> 24-hour dedicated concierge for personalized travel assistance.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #2c3e50; color: #fff; text-align: center; padding: 30px; margin-top: 0; width: 100%;">
+    <p>📍 123 Paradise Street, New Delhi | 📞 +91 9876543210</p>
+    <p>&copy; 2025 Hotel Paradise. All rights reserved.</p>
+</footer>
+{% endblock %}

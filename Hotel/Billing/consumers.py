@@ -58,9 +58,9 @@ class MySyncConsumer(SyncConsumer):
                     'message':"Bill Data received"
                 })
             })
+            casher_id = billData[0].get('cashier_id', 2)
             billData = billData[1::]
             try:
-                casher_id = 2
                 cashier = get_object_or_404(Cashier, pk=casher_id)
                 subData={'cashier':cashier.chashier_name}
                 bill = Bill.objects.create(cashier_name = cashier, subtotal=0.0, taxAmt=0.0)
